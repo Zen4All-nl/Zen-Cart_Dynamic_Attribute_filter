@@ -152,20 +152,27 @@ if (!defined('IS_ADMIN_FLAG')) {
 // bof dynamic filter 1 of 3
         if ( (strlen($value) > 0 || is_array($value) && array_filter($value) ) && ($key != 'main_page') && ($key != zen_session_name()) && ($key != 'error') && (!in_array($key, $exclude_array)) && ($key != 'x') && ($key != 'y') ) {
 // eof dynamic filter 1 of 3
-          if ( (SEARCH_ENGINE_FRIENDLY_URLS == 'true') && ($search_engine_safe == true) ) {
+          if ( (SEARCH_ENGINE_FRIENDLY_URLS == 'true') && ($search_engine_safe == true) )
+          {
 //    die ('here');
             $get_url .= $key . '/' . rawurlencode(stripslashes($value)) . '/';
-          } else {
+          }
+          else
+          {
 // bof dynamic filter 2 of 3
-            if (is_array($value)) {
-              foreach($value as $arr){
+            if (is_array($value))
+            {
+              foreach($value as $arr)
+              {
                 $get_url .= zen_sanitize_string($key) . '[]=' . rawurlencode(stripslashes($arr)) . '&';
               }
-            } else {
+            }
+            else
+            {
 // eof dynamic filter 2 of 3
               $get_url .= zen_sanitize_string($key) . '=' . rawurlencode(stripslashes($value)) . '&';
 // bof dynamic filter 3 of 3
-			}
+            }
 // eof dynamic filter 3 of 3
           }
         }
@@ -176,7 +183,6 @@ if (!defined('IS_ADMIN_FLAG')) {
 
     return $get_url;
   }
-
 
 ////
 // Returns the clients browser

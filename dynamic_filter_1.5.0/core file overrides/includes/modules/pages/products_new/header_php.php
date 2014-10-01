@@ -27,7 +27,7 @@
                                     p.products_quantity, p.products_weight, p.product_is_call,
                                     p.product_is_always_free_shipping, p.products_qty_box_status,
                                     p.master_categories_id, m.manufacturers_id";
-									
+
   $listing_sql .= " FROM " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m on (p.manufacturers_id = m.manufacturers_id)" .
    " left join " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id" .
    " left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id" .
@@ -35,7 +35,7 @@
    " join " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id" .
    " join " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
    (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " join " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '');
-   
+
   $listing_sql .= " WHERE p.products_status = 1 AND pd.language_id = :languageID " .
    $display_limit . $filter . " GROUP BY p.products_id " . $having . $order_by;
 

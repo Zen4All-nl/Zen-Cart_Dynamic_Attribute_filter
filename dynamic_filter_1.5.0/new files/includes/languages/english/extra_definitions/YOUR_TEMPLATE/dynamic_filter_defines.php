@@ -1,10 +1,10 @@
 <?php
 /**
-* product_filter_defines.php
-*
-*Zen Cart product filter module
-*Damian Taylor, March 2010
-*/
+ * product_filter_defines.php
+ *
+ * Zen Cart product filter module
+ * Damian Taylor, March 2010
+ */
 
 define('BOX_HEADING_FILTER', 'Narrow Your Results');
 define('DYNAMIC_FILTER_TEXT_MANUFACTURER','Brand');
@@ -20,4 +20,7 @@ define('DYNAMIC_FILTER_BUTTON_CLEAR_FILTER_ALT', 'Clear Filter');
 define('DYNAMIC_FILTER_BUTTON_CLEAR_ALL_FILTER_ALT', 'Clear All Filters');
 define('DYNAMIC_FILTER_TEXT_PREFIX', 'By ');
 define('DYNAMIC_FILTER_TEXT_SUFFIX', ':');
-?>
+define('TEXT_DYNAMIC_FILTER_DIVIDER', ' -- ');
+define('TEXT_DYNAMIC_FILTER_AND_OVER', ' and over');
+define('TEXT_DYNAMIC_FILTER_SHOW_MORE', 'More');
+define('TEXT_DYNAMIC_FILTER_SHOW_LESS', 'Less');
