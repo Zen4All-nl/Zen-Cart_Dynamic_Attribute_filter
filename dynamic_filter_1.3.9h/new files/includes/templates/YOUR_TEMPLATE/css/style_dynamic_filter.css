@@ -1,0 +1,85 @@
+.dFilter ul {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	list-style-type: none;
+	clear: both
+}
+
+.dFilterLink a.enabled:link, .dFilterLink a.selected:link, .dFilterLink a.enabled:hover, .dFilterLink a.selected:hover, .dFilterLink a.enabled:visited, .dFilterLink a.selected:visited {
+	color: #666;
+}
+
+.dFilterLink a.enabled:hover, .dFilterLink a.selected:hover {
+	text-decoration: underline
+}
+
+.dFilterScroll {
+	height: 130px;
+	border: 1px solid #CCCCCC;
+	overflow: auto
+}
+
+.dFilterExpand {
+	overflow: hidden
+}
+
+.dFilterDrop {
+	width: 98%
+}
+
+.dFilterLink a {
+	padding: 1px 0 1px 2px;
+	text-decoration: none;
+	font-size: 1em;
+	margin-left: 1px
+}
+
+.dFilterLink a.disabled {
+	color: #ccc;
+}
+
+.dFilterLink input[type=checkbox] {
+	margin: 0;
+	padding: 0 3px
+}
+
+.dFilterToggle {
+	display:none;
+	text-decoration:none;
+	font-size:10px;
+	cursor:pointer;
+	margin-left:5px
+}
+
+.dFilterToggle a:link, .dFilterToggle a:visited, dFilterToggle a:hover {
+	color: #000
+}
+
+.dFilterToggleImg {
+	margin-left:5px;
+	vertical-align:middle
+}
+
+.dFilterHeading {
+	font-weight: bold;
+	float:left;
+	color: #000;
+	font-size: 1.2em;
+	padding: 0 0 10px 0;
+	margin: 2px 0 0 0
+}
+
+.dFilterClear {
+	float:right
+}
+
+#dFilterButton {
+	text-align:center;
+	margin:1em
+}
+
+#dFilterClearAll {
+	text-align:center;
+	margin:1em
+}

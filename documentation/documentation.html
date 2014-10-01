@@ -1,0 +1,600 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+  <meta http-equiv="pragma" content="no-cache">  
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">  
+  <meta http-equiv="content-language" content="en">  
+  <title>Dynamic Filter</title>
+    
+  <link rel="stylesheet" type="text/css" href="includes/css/stylesheet.css">  
+  <script type="text/javascript" src="includes/jscript/jscript_tabs.js"></script>
+</head><body>
+<div id="wrapper">
+<h2>Dynamic Filter v1.0</h2>
+
+<div id="slidetabsmenu" style="display: none;">
+<ul>
+  <li> <a onClick="expandcontent('sc1', this)" href="javascript:void(0)"><span>Overview</strong></a></li>
+  <li> <a onClick="expandcontent('sc2', this)" href="javascript:void(0)"><span>Install/Uninstall</strong></a></li>
+  <li> <a onClick="expandcontent('sc3', this)" href="javascript:void(0)"><span>Configuration</strong></a></li>
+  <li> <a onClick="expandcontent('sc4', this)" href="javascript:void(0)"><span>FAQs</strong></a></li>
+  <li> <a onClick="expandcontent('sc5', this)" href="javascript:void(0)"><span>Credits &amp; History</strong></a></li>
+  <li> <a onClick="expandcontent('sc6', this)" href="javascript:void(0)"><span>License</strong></a></li>
+</ul>
+</div>
+<br style="clear: both;">
+
+<!--Begin tabcontainer-->
+<div id="tabcontentcontainer">
+
+<!--Begin sc1-->
+<div class="tabcontent" id="sc1" style="display: block;">
+<div class="textcontent">
+<h3>OVERVIEW</h3>
+<p><strong>Dynamic Filter</strong> will allow your customers to filter the products listed on any product listing page (including All Products, New Products, Featured Products, Specials and Search Results) in your store.<br>
+Customers can filter by manufacturer, category, price and any attribute. </p>
+<p>The module allows you among other things, to control which pages the filter appears on, the filter style (links, checkboxes or dropdowns) and also allows you to include or exclude  attributes.</p>
+<p>The Stock by Attribute module is supported (tested on version 4.7 but should work with all versions) if installed; only items with stock will be shown in the list.</p>
+<p>Google Event Tracking is supported and has been tested to work with Simple Google Analytics v1.2.5 but should work with all versions. </p>
+  </div>
+</div>
+<!--End sc1-->
+
+<!--Begin sc2-->
+<div class="tabcontent" id="sc2" style="display: block;">
+<div class="textcontent">
+<h3>INSTALL/UNINSTALL</h3>
+
+<p><b>!!!!!BACKUP YOUR STORE BEFORE YOU BEGIN!!!!!</b></p>
+<p>There are different versions of the Dynamic Filter depending on which version of Zen Cart you are using, so you will need to follow the relevant installation instructions. </p>
+<p>Installation of the module has been made as simple as possible and shouldn't take long for any stores which have not already modified any of the core files which this module has to modify.</p>
+<ol class="InstallationUninstallation">
+	<li><a href="#zen-cart-138a">Installation for Zen Cart version 1.3.8a</a></li>
+	<li><a href="#zen-cart-139h">Installation for Zen Cart version 1.3.9h</a></li>
+	<li><a href="#zen-cart-150">Installation for Zen Cart version 1.5.0</a></li>
+	<li><a href="#uninstall-all">Uninstall for all versions</a></li>
+</ol>
+<br />
+
+<h4><a name="zen-cart-138a" id="zen-cart-138a"></a><u>Installation instructions for Zen Cart version 1.3.8a </u></h4>
+<p>Before you start you should rename all folders in the distribution named 'YOUR_TEMPLATE' to the template folder name you are using.</p>
+<p>You will find  3 folders beneath the folder named 'dynamic_filter_1.3.8a', one contains new files, one template override files and the other modified core files.</p>
+<ol>
+ <li><strong>New Files</strong><br />
+   Copy the includes folder from the 'new files' folder into your store's main directory.<br>
+   The files are already in the correct directory structure, so a single drag-and-drop of the folder into the root directory for the store will put the files in the correct locations.<br>
+   <STRONG>Please do not copy the files individually</STRONG> - doing so often results in files being missed out!
+ 		<ul class="Steps">
+			<li>includes/extra_datafiles/dynamic_filter_filenames.php</li>
+			<li>includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php</li>
+			<li>includes/modules/pages/advanced_search_result/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/featured_products/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/index/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/products_all/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/products_new/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/specials/jscript_dynamic_filter.php</li>
+			<li>includes/modules/sideboxes/YOUR_TEMPLATE/dynamic_filter.php</li>
+			<li>includes/modules/YOUR_TEMPLATE/dynamic_filter.php</li>
+			<li>includes/templates/YOUR_TEMPLATE/buttons/english/clear_all_filters.png</li>
+			<li>includes/templates/YOUR_TEMPLATE/buttons/english/filter.png</li>
+			<li>includes/templates/YOUR_TEMPLATE/css/style_dynamic_filter.css</li>
+			<li>includes/templates/YOUR_TEMPLATE/images/arrow_less.gif</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/images/arrow_more.gif</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/images/clear_filter.png</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.js</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.min.js</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/sideboxes/tpl_dynamic_filter.php</li>
+ 		</ul>
+ </li>
+
+ <li>
+   <strong>Template Override Files</strong><br />
+   A single standard Zen Cart template file requires modifications.<br>
+   The sample template file can be found within the 'template file overrides' folder in the distribution as follows.
+   <ul class="Steps"><li>includes/index_filters/YOUR_TEMPLATE/default_filter.php</li>
+   </ul>
+   <UL>
+     <LI>
+       <p>If  this template file <STRONG>hasn't</STRONG> already been modified for your store, the sample file included in this distribution can be copied into the store's template directory and will then override the standard version of the file included in the Zen Cart distribution.</p>
+     </LI>
+     <LI>
+       <p>If this template file <STRONG>has</STRONG> already been modified for your store, then you will need to copy the code changes from the sample file across to your modified file. The changes are clearly marked within the sample files  (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) in the distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br>
+         <STRONG>Do not  make changes to your template files without taking a copy of them first so you can replace them later if needed!</STRONG></p>
+       </LI>
+   </UL>
+</li>
+
+ <li>
+   <strong>Modified Core Files</strong><br>
+   A few core Zen Cart files must be modified to work with the Dynamic Filter module.<br>
+   If any of the core files this distribution uses have already been modified (because of another third party module being installed for example) then the changes for the respective files should be applied manually by copying across the appropriate sections of code required for the Dynamic Filter module. These sections are clearly marked (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) within the sample files provided in this distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br>
+   The modified files can be found within the 'core file overrides' folder in the distribution as follows.<br />
+   <STRONG>Do not  make changes to your core files without taking a copy of them first so you can replace them later if needed!</STRONG>
+   <ul class="Steps">
+     <li>includes/classes/split_page_results.php</li>
+     <li>includes/functions/functions_general.php</li>
+     <li>includes/functions/functions_general.php_5_3</li>
+     <li>includes/modules/pages/advanced_search_result/header_php.php</li>
+     <li>includes/modules/pages/featured_products/header_php.php</li>
+     <li>includes/modules/pages/products_all/header_php.php</li>
+     <li>includes/modules/pages/products_new/header_php.php</li>
+     <li>includes/modules/pages/specials/header_php.php</li>
+     <li>includes/modules/pages/specials/main_template_vars.php</li>
+   </ul>
+ </li>
+ <STRONG>Note:</STRONG> You do not need to copy both functions_general.php and functions_general.php_5_3. If your server is running php version 5.3 or higher, rename functions_general.php_5_3 to functions_general.php and upload that one only, otherwise upload functions_general.php only.<br />
+ You can find which version of php your server is running by going to Admin -> Tools -> Server/Version Info.<br /><br />
+
+ <li><strong>Run the SQL patch   and Configure the Dynamic Filter Settings</strong><br>
+   Create  a new configuration switch for the Dynamic Filter module by running the 'install.sql'    via Admin-&gt;Tools-&gt;Install SQL Patches.</li>
+ </ol>
+ 
+ <strong>A note about jQuery</strong><br>
+ Some functions of Dynamic Filter require the jQuery library to be available (see configuration section for details on which features require jQuery). If your store does not already have jQuery available you can download it <a href="http://www.jquery.com/" target="_blank">here</a>.<br>
+ Once downloaded, rename it by prefixing with 'jscript_' so if the file you have downloaded is 'jquery-1.4.0.min.js', you would rename it to 'jscript_jquery-1.4.0.min.js'.<br>
+ Now upload to includes/templates/YOUR_TEMPLATE/jscript in your store.
+ <br />
+ <p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+
+<h4><a name="zen-cart-139h" id="zen-cart-139h"></a><u>Installation instructions for Zen Cart version 1.3.9h </u></h4>
+<p>Before you start you should rename all folders in the distribution named 'YOUR_TEMPLATE' to the template folder name you are using.</p>
+<p>You will find 3 folders beneath the folder named 'dynamic_filter_1.3.9h', one contains new files, one template override files and the other modified core files.</p>
+<ol>
+ <li><strong>New Files</strong><br />
+   Copy the includes folder from the 'new files' folder into your store's main directory.<br>
+   The files are already in the correct directory structure, so a single drag-and-drop of the folder into the root directory for the store will put the files in the correct locations.<br>
+   <STRONG>Please do not copy the files individually</STRONG> - doing so often results in files being missed out!
+ 		<ul class="Steps">
+			<li>includes/extra_datafiles/dynamic_filter_filenames.php</li>
+			<li>includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php</li>
+			<li>includes/modules/pages/advanced_search_result/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/featured_products/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/index/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/products_all/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/products_new/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/specials/jscript_dynamic_filter.php</li>
+			<li>includes/modules/sideboxes/YOUR_TEMPLATE/dynamic_filter.php</li>
+			<li>includes/modules/YOUR_TEMPLATE/dynamic_filter.php</li>
+			<li>includes/templates/YOUR_TEMPLATE/buttons/english/clear_all_filters.png</li>
+			<li>includes/templates/YOUR_TEMPLATE/buttons/english/filter.png</li>
+			<li>includes/templates/YOUR_TEMPLATE/css/style_dynamic_filter.css</li>
+			<li>includes/templates/YOUR_TEMPLATE/images/arrow_less.gif</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/images/arrow_more.gif</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/images/clear_filter.png</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.js</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.min.js</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/sideboxes/tpl_dynamic_filter.php</li>
+ 		</ul>
+ </li>
+
+ <li>
+   <strong>Template Override Files</strong><br />
+   A single standard Zen Cart template file requires modifications.<br>
+   The sample template file can be found within the 'template file overrides' folder in the distribution as follows.
+   <ul class="Steps"><li>includes/index_filters/YOUR_TEMPLATE/default_filter.php</li>
+   </ul>
+   <UL>
+     <LI>
+       <p>If  this template file <STRONG>hasn't</STRONG> already been modified for your store, the sample file included in this distribution can be copied into the store's template directory and will then override the standard version of the file included in the Zen Cart distribution.</p>
+     </LI>
+     <LI>
+       <p>If this template file <STRONG>has</STRONG> already been modified for your store, then you will need to copy the code changes from the sample file across to your modified file. The changes are clearly marked within the sample files  (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) in the distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br>
+         <STRONG>Do not  make changes to your template files without taking a copy of them first so you can replace them later if needed!</STRONG></p>
+       </LI>
+   </UL>
+</li>
+
+ <li>
+   <strong>Modified Core Files</strong><br>
+   A few core Zen Cart files must be modified to work with the Dynamic Filter module.<br>
+   If any of the core files this distribution uses have already been modified (because of another third party module being installed for example) then the changes for the respective files should be applied manually by copying across the appropriate sections of code required for the Dynamic Filter module. These sections are clearly marked (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) within the sample files provided in this distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br>
+   The modified files can be found within the 'core file overrides' folder in the distribution as follows.<br />
+   <STRONG>Do not  make changes to your core files without taking a copy of them first so you can replace them later if needed!</STRONG>
+   <ul class="Steps">
+     <li>includes/classes/split_page_results.php</li>
+     <li>includes/functions/functions_general.php</li>
+     <li>includes/modules/pages/advanced_search_result/header_php.php</li>
+     <li>includes/modules/pages/featured_products/header_php.php</li>
+     <li>includes/modules/pages/products_all/header_php.php</li>
+     <li>includes/modules/pages/products_new/header_php.php</li>
+     <li>includes/modules/pages/specials/header_php.php</li>
+     <li>includes/modules/pages/specials/main_template_vars.php</li>
+   </ul>
+ </li>
+
+ <li><strong>Run the SQL patch and Configure the Dynamic Filter Settings</strong><br>
+   Create a new configuration switch for the Dynamic Filter module by running the 'install.sql' via Admin-&gt;Tools-&gt;Install SQL Patches.</li>
+ </ol>
+ 
+ <strong>A note about jQuery</strong><br>
+ Some functions of Dynamic Filter require the jQuery library to be available (see configuration section for details on which features require jQuery). If your store does not already have jQuery available you can download it <a href="http://www.jquery.com/" target="_blank">here</a>.<br>
+ Once downloaded, rename it by prefixing with 'jscript_' so if the file you have downloaded is 'jquery-1.4.0.min.js', you would rename it to 'jscript_jquery-1.4.0.min.js'.<br>
+ Now upload to includes/templates/YOUR_TEMPLATE/jscript in your store.
+ <br />
+ <p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+
+<h4><a name="zen-cart-150" id="zen-cart-150"></a><u>Installation instructions for Zen Cart version 1.5.0 </u></h4>
+<p>Before you start you should rename all folders in the distribution named 'YOUR_TEMPLATE' to the template folder name you are using, and rename the 'admin' folder in the distribution to the admin folder name you are using.</p>
+<p>You will find 3 folders beneath the folder named 'dynamic_filter_1.5.0', one contains new files, one template override files and the other modified core files.</p>
+<ol>
+ <li><strong>New Files</strong><br />
+   Copy the includes folder from the 'new files' folder into your store's main directory.<br>
+   The files are already in the correct directory structure, so a single drag-and-drop of the folder into the root directory for the store will put the files in the correct locations.<br>
+   <STRONG>Please do not copy the files individually</STRONG> - doing so often results in files being missed out!<br>
+ 		<ul class="Steps">
+			<li>admin/includes/extra_datafiles/dynamic_filter_filenames.php</li>
+			<li>includes/extra_datafiles/dynamic_filter_filenames.php</li>
+			<li>includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php</li>
+			<li>includes/modules/pages/advanced_search_result/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/featured_products/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/index/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/products_all/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/products_new/jscript_dynamic_filter.php</li>
+			<li>includes/modules/pages/specials/jscript_dynamic_filter.php</li>
+			<li>includes/modules/sideboxes/YOUR_TEMPLATE/dynamic_filter.php</li>
+			<li>includes/modules/YOUR_TEMPLATE/dynamic_filter.php</li>
+			<li>includes/templates/YOUR_TEMPLATE/buttons/english/clear_all_filters.png</li>
+			<li>includes/templates/YOUR_TEMPLATE/buttons/english/filter.png</li>
+			<li>includes/templates/YOUR_TEMPLATE/css/style_dynamic_filter.css</li>
+			<li>includes/templates/YOUR_TEMPLATE/images/arrow_less.gif</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/images/arrow_more.gif</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/images/clear_filter.png</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.js</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.min.js</li>
+ 		    <li>includes/templates/YOUR_TEMPLATE/sideboxes/tpl_dynamic_filter.php</li>
+ 		</ul>
+ </li>
+
+ <li>
+   <strong>Template Override Files</strong><br />
+   A single standard Zen Cart template file requires modifications.<br>
+   The sample template file can be found within the 'template file overrides' folder in the distribution as follows.
+   <ul class="Steps"><li>includes/index_filters/YOUR_TEMPLATE/default_filter.php</li>
+   </ul>
+   <UL>
+     <LI>
+       <p>If  this template file <STRONG>hasn't</STRONG> already been modified for your store, the sample file included in this distribution can be copied into the store's template directory and will then override the standard version of the file included in the Zen Cart distribution.</p>
+     </LI>
+     <LI>
+       <p>If this template file <STRONG>has</STRONG> already been modified for your store, then you will need to copy the code changes from the sample file across to your modified file. The changes are clearly marked within the sample files  (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) in the distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br>
+         <STRONG>Do not  make changes to your template files without taking a copy of them first so you can replace them later if needed!</STRONG></p>
+       </LI>
+   </UL>
+</li>
+
+ <li>
+   <strong>Modified Core Files</strong><br>
+   A few core Zen Cart files must be modified to work with the Dynamic Filter module.<br>
+   If any of the core files this distribution uses have already been modified (because of another third party module being installed for example) then the changes for the respective files should be applied manually by copying across the appropriate sections of code required for the Dynamic Filter module. These sections are clearly marked (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) within the sample files provided in this distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br>
+   The modified files can be found within the 'core file overrides' folder in the distribution as follows.<br />
+   <STRONG>Do not  make changes to your core files without taking a copy of them first so you can replace them later if needed!</STRONG>
+   <ul class="Steps">
+     <li>includes/classes/split_page_results.php</li>
+     <li>includes/functions/functions_general.php</li>
+     <li>includes/modules/pages/advanced_search_result/header_php.php</li>
+     <li>includes/modules/pages/featured_products/header_php.php</li>
+     <li>includes/modules/pages/products_all/header_php.php</li>
+     <li>includes/modules/pages/products_new/header_php.php</li>
+     <li>includes/modules/pages/specials/header_php.php</li>
+     <li>includes/modules/pages/specials/main_template_vars.php</li>
+   </ul>
+ </li>
+
+ <li><strong>Run the SQL patch and Configure the Dynamic Filter Settings</strong><br>
+   Create a new configuration switch for the Dynamic Filter module by running the 'install.sql' via Admin-&gt;Tools-&gt;Install SQL Patches.</li>
+ </ol>
+ 
+ <strong>A note about jQuery</strong><br>
+ Some functions of Dynamic Filter require the jQuery library to be available (see configuration section for details on which features require jQuery). If your store does not already have jQuery available you can download it <a href="http://www.jquery.com/" target="_blank">here</a>.<br>
+ Once downloaded, rename it by prefixing with 'jscript_' so if the file you have downloaded is 'jquery-1.4.0.min.js', you would rename it to 'jscript_jquery-1.4.0.min.js'.<br>
+ Now upload to includes/templates/YOUR_TEMPLATE/jscript in your store.
+ <br />
+ <p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+
+<h4><a name="uninstall-all" id="uninstall-all"></a><u>Uninstall instructions for all Zen Cart versions </u></h4>
+<p>There is no need to remove the Dynamic Filter module, as it can be completely disabled in admin (see Configuration).<br>
+  If you do wish to remove the module, simply delete all the New Files loaded in step 1, delete (or replace with your original if the file was already present) Template Override Files loaded in step 2, then replace all the Modified Core Files loaded in step 3 with your original files.</p>
+<p>Finally, run 'uninstall.sql' to remove the configuration switch.</p>
+<p><a href="#top">Back to top</a></p>
+
+</div>
+</div>
+<!--End sc2-->
+
+<!--Begin sc3-->
+<div class="tabcontent" id="sc3" style="display: block;">
+<div class="textcontent">
+<h3>CONFIGURATION</h3>
+<p><u><strong>Switching On </strong></u></p>
+<p>After the install, the filter is enabled on all category pages as well as all products, new products, featured products, specials and the search results page. However, the filter will not be displayed in your store before you switch it on.<br>
+  To switch the filter on, go to Admin -&gt; Tools -&gt; Layout Boxes Controller and switch on the sidebox named 'sideboxes/YOUR_TEMPLATE/dynamic_filter.php'.</p>
+<p><strong><u>Admin Options</u></strong></p>
+<p>This module includes an admin option to enable/disable the module and more.<br>
+  All controls can be accessed via Admin -&gt; Configuration -&gt; Dynamic Filter. The image below shows the admin controls.</p>
+	<table class="imageTable" border="0" cellspacing="0" cellpadding="0">
+	  <tr>
+	    <td>Admin controls<br /><img src="images/admin.png" width="900" height="266"></td>
+	  </tr>
+	</table>
+
+<br /><p><strong>Enabling/Disabling the Filter</strong>
+The first 6 switches allow you to control which pages the Dynamic Filter will be available on; it can be enabled or disabled on all category pages, all products, new products, featured products, specials and search results pages.<br>
+  Just set the relevant  switch to True or False.</p>
+     	<ul class="Steps">
+   		  <li>Enable on Category Pages</li>
+   		  <li>Enable on All Products Page</li>
+   		  <li>Enable on  New Products Pages</li>
+   		  <li>Enable on  Featured Products Pages</li>
+   		  <li>Enable on Specials Page</li>
+   		  <li>Enable on Search Page</li>
+		</ul>
+<br /><p><strong>Styling the Filter</strong>
+The Dynamic Filter can be rendered in different styles depending on your preference.<br>
+  For example, if a section has too many options you can choose to display that section in a minimized format.The following section describes the function of the styling switches.</p>
+   		<ul class="Steps">
+   		  <li>Filter Style</li>
+   		  <li>Disabled Options Method</li>
+   		  <li>Options Box Style</li>
+		  <li>Maximum Number of Options</li>
+   		  <li>Maximum Number of Price Ranges</li>
+   		  <li>Minimum Price Range</li>
+		  <li>Maximum Price Range</li>
+		  <li>Include Options</li>
+		  <li>Exclude Options</li>
+		</ul>
+
+<ol>
+ <li><strong>Filter Style</strong><br />
+  The Filter Style switch is used to control how the Dynamic Filter behaves.<br>
+  In 'Link' mode, each option is a text link; when you click one of the options the page is refreshed immediately before any other options can be clicked.<br>
+  When in 'Dropdown' mode, each option is an item in a dropdown list. There are two Dropdown modes to choose - Single and Multi.<br />
+  In 'Single' mode, when you choose an option the page is refreshed immediately before any other options can be chosen.<br>
+  In 'Multi' mode, you can choose as many options as you like before the page is refreshed. To refresh the page, you must click the 'Filter' button.<br />
+  When in 'Checkbox' mode, each option is a checkbox. Like Dropdown, there are two Checkbox modes to choose - Single and Multi.<br />
+  In 'Single' mode, when you check a box the page is refreshed immediately before any other boxes can be checked.<br>
+  In 'Multi' mode, you can check as many boxes as you like before the page is refreshed. To refresh the page, you must click the 'Filter' button.<br />
+  <strong>Single dropdown and single checkbox mode require javascript to be enabled.</strong>
+   <table class="imageTable" border="0" cellspacing="10px" cellpadding="20px">
+     <tr>
+       <td>Filter Style 'Link'<br />
+         <img src="images/link.png"></td>
+       <td>Filter Style 'Dropdown - Multi'<br />
+         <img src="images/dropdown_multi.png"></td>
+       <td>Filter Style 'Checkbox - Multi'<br />
+         <img src="images/checkbox_multi.png"></td>
+     </tr>
+   </table>
+ </li>
+
+ <li><strong>Disabled Options Method</strong><br />
+ The Disabled Options Method switch is used to control how disabled options are handled.<br>
+  The available options are 'greyed' and 'hidden'.<br>
+    The greyed option leaves the options visible but greyed out so they cannot be clicked.<br>
+    The hidden option hides the options completely.
+    <br>
+  In the examples shown below, the Price, Colour and Size attributes demonstrate this.<br>
+	<table class="imageTable" border="0" cellspacing="10px" cellpadding="20px">
+	  <tr>
+	    <td>Disabled Options Method 'Greyed'<br />
+	        <img src="images/greyed.png"></td>
+	    <td>Disabled Options Method 'Hidden'<br />
+	        <img src="images/hidden.png"></td>
+	  </tr>
+	</table>
+ </li>
+
+ <li><strong>Options Box Style &amp; Maximum Number of Options</strong><br />
+ The Options Box Style switch is used to control how options are displayed when the Maximum Number of Options has been reached.<br>
+ This switch has two possible settings,
+ 'scroll' and 'expand'.<br>
+ The scroll method uses a scroll box to minimize the number of options on display.<br>
+ The expand method uses a more/less link to expand/contract the available space for the option.
+ The expand method uses jQuery to achieve a smooth expand/contract effect, so requires you have the jQuery library available. See the Installation section for more information on this.<br>
+ Both methods are shown in the examples below.<br />
+ <strong>Expand mode requires  javascript to be enabled.</strong></li>
+     <br><br>
+   The Maximum Number of Options switch is used to control the number of options shown under each sub-heading.<br>
+   In the examples shown below, the 'Colour' attribute demonstrates the effect when the maximum number of options is triggered.
+   <table class="imageTable" border="0" cellspacing="10px" cellpadding="20px">
+     <tr>
+       <td>Options Box Style 'Scroll'<br /><img src="images/scroll.png"></td>
+	        <td>Options Box Style 'Expand'<br /><img src="images/expand.png"></td>
+	      </tr>
+   </table>
+ </li>
+ <li><strong>Maximum Number of Price Ranges</strong><br />
+ The Maximum Number of Price Ranges controls how the Dynamic Filter price ranges will be calculated.<br>
+ The filter will attempt to generate no more price ranges than the number specified.<br>
+ This number can be overridden by the Maximum Price Range below. </li><br /><br />
+ 
+ <li><strong>Minimum Price Range  &amp; Maximum Price Range</strong><br />
+ The Minimum Price Range is used to control 
+ the minimum gap between prices shown in the Price section of the filter.<br>
+ The Maximum Price Range is used to control 
+ the maximum gap between prices shown in the Price section of the filter. This value can override the Maximum Number of Price Ranges control. </li><br /><br />
+
+ <li><strong>Include Options</strong><br />
+ The Include Options control 
+ allows you to specify a definitive list of attributes to display in the filter.<br>
+ The list should include the Option Name IDs (as found in Admin -> Catalog -> Option Name Manager) separated by a comma.<br>
+ Leave this option empty to include all attributes. </li><br /><br />
+
+ <li><strong>Exclude Options</strong><br />
+ The Exclude Options control 
+ allows you to specify a  list of attributes to omit from the filter.<br>
+ The list should include the Option Name IDs (as found in Admin -> Catalog -> Option Name Manager) separated by a comma.<br>
+ Leave this option empty to exclude no attributes. </li>
+</ol>
+
+<br /><p><strong>Additional Settings </strong><br />
+Dynamic Filter allows for event tracking in Google Analytics if the 'Filter Style' is set to either 'Link' or 'Checkbox - Single'.<br>
+Both the traditional ga.js and new asyncronous methods are supported. <br>
+  If you wish to switch this function on, set Google Event Tracking to the desired method.<br>
+  This will generate code to track customers adding and removing filters to help you analyse what they are looking for.<br>
+  To switch this feature off, set it to 'No'.<br />
+    <STRONG>Google event tracking  requires  javascript to be enabled and Google Analytics code active in your store, such as </STRONG><a href="http://www.zen-cart.com/index.php?main_page=product_contrib_info&products_id=412" target="_blank">Simple Google Analytics  </a></p>
+<ul class="Steps">
+     	  <li>Google Event Tracking</li>
+		</ul>
+
+<br /><p><strong>Optional (but recommended) Settings</strong><br />
+Zen Cart comes as standard with a manufacturer/category shown at the top of category pages.<br>
+It is recommended that this is swithced off as the Dynamic Filter also has a manufacturer/category section.<br>
+To switch the standard Zen Cart filter off, go to Admin -&gt; Configuration -&gt; Product Listing and set 'Display Category/Manufacturer Filter' to off.</p>
+</div>
+
+</div>
+</div>
+<!--End sc3-->
+
+<!--Begin sc4-->
+<div class="tabcontent" id="sc4" style="display: block;">
+<div class="textcontent">
+<h3>FAQs</h3>
+
+<ol class="TableOfContents">
+	<li><a href="#change-sideobx-heading">How can I change the filter sidebox heading?</a></li>
+	<li><a href="#change-sub-headings">How can I change the filter sub-headings?</a></li>
+	<li><a href="#change-querystring-prefix">How can I change the filter querystring prefix?</a></li>
+	<li><a href="#change-querystring-names">How can I change the filter querystring names?</a></li>
+	<li><a href="#uri-mapping">I have URI mapping software installed in my store. Does this modification work with URI mapping?</a></li>
+	<li><a href="#hooking-into-the-filter">Is it possible to hook into Dynamic Filter, to redirect banner ads to a pre-filtered list for example?</a></li>
+</ol>
+
+		<h4><a name="change-sideobx-heading" id="change-sideobx-heading"></a>How can I change the filter sidebox heading?</h4>
+		<p>The Dynamic Filter sidebox heading is initially set to 'Narrow Your Results'. This can be changed if required.<br>
+	    To change it, open up file includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php and change the following line to reflect the heading you require</p>
+		<ul class="Steps">
+     	  <li>define('BOX_HEADING_FILTER', 'Narrow Your Results');</li>
+		</ul>
+		<p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+		
+		<h4><a name="change-sub-headings" id="change-sub-headings"></a>How can I change the filter sub-headings?</h4>
+		<p>All sub-headings are prefixed with the word 'By' and suffixed with a colon (':'). If you need to change these, open up file includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php and change the following lines as you require</p>
+		<ul class="Steps">
+		  <li>define('DYNAMIC_FILTER_TEXT_PREFIX', 'By ');</li>
+		  <li>define('DYNAMIC_FILTER_TEXT_SUFFIX', ':');</li>
+		</ul>
+		
+		<p>The manufacturer, category and price sub-headings are initially set to 'By Brand:', 'By Category:' and 'By Price:' respecitvely. These can also be changed if required.<br>
+	    To change them, open up file includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php and change the following lines to reflect the sub-headings you require</p>
+		<ul class="Steps">
+     	  <li>define('DYNAMIC_FILTER_TEXT_MANUFACTURER','Brand');</li>
+		  <li>define('DYNAMIC_FILTER_TEXT_CATEGORY','Category');</li>
+		  <li>define('DYNAMIC_FILTER_TEXT_PRICE','Price');</li>
+		</ul>
+		<p>All other sub-headings are generated by taking the name of the attribute (e.g, if your products have an attribute of colour, the heading would be 'By Colour:') so these can only be changed by changing the attribute name.</p>
+		<p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+
+		<h4><a name="change-querystring-prefix" id="change-querystring-prefix"></a>How can I change the filter querystring prefix?</h4>
+		<p>Each time a filter is applied it is added to the querystring in the URL. A prefix is used which is initially set to 'flt' e.g. when filtering by category you will see   'fltCategory[]=xx' in the querystring). This can be changed if required.<br>
+      Open up file includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php and change the following line to reflect the prefix you require</p>
+		<ul class="Steps">
+     	  <li>define('DYNAMIC_FILTER_PREFIX', 'flt');</li>
+		</ul>
+		<p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+
+		<h4><a name="change-querystring-names" id="change-querystring-names"></a>How can I change the filter querystring names?</h4>
+		<p>The querystring names for manufacturer, category and price are initially set to 'Brand', 'Category' and 'Price' respectively (e.g. when filtering by manufacturer you will see 'fltBrand[]=xx' in the querystring). This can be changed if required.<br>
+      Open up file includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php and change the following lines to reflect the names you require</p>
+		<ul class="Steps">
+     	  <li>define('DYNAMIC_FILTER_MANUFACTURER_GROUP','Brand');<br>
+     	    define('DYNAMIC_FILTER_CATEGORY_GROUP','Category');<br>
+   	      define('DYNAMIC_FILTER_PRICE_GROUP','Price');</li>
+		</ul>
+		<p>All other querystring names are generated by taking the name of the attribute (e.g, if your products have an attribute of size, the querystring name would be 'fltSize') so these can only be changed by changing the attribute name.</p>
+		<p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+		
+		<h4><a name="uri-mapping" id="uri-mapping"></a>I have URI mapping software installed in my store. Does this modification work with URI mapping?</h4>
+		<p>Dynamic Filter has been tested and is fully working with Ceon URI mapping version 4.0.7 but should work with earlier versions of this software too.<br>
+		It has not been tested but shouldn't be too hard to modify to work  with any other mapping software.<br>
+		Only the file below would need to be editted. Scanning this file for 'CEON' will show the specific code edits that allow Dynamic Filter to work with Ceon URI mapping. </p>
+		<ul class="Steps">
+     	  <li>includes/templates/YOUR_TEMPLATE/sideboxes/tpl_dynamic_filter.php</li>
+		</ul>
+		<p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
+
+		<h4><a name="hooking-into-the-filter" id="hooking-into-the-filter"></a>Is it possible to hook into Dynamic Filter, to redirect banner ads to a pre-filtered list for example?</h4>
+		<p>You can easily hook in to the Dynamic Filter by simply adding the required filters to the end of the querystring.<br>
+	  For example, if your store sells jackets and pants and you would like to direct a banner ad to New Jackets and Pants you could use the following in the Banner URL </p>
+		<ul class="Steps">
+		  <li>/index.php?main_page=products_new&amp;fltCategory[]=xx&amp;fltCategory[]=yy</li>
+		</ul>
+		<p> If you are using Ceon URI mapping software, you would (assuming your 'products_new' page is mapped to 'NewProducts') use</p>
+		<ul class="Steps">
+		  <li>/NewProducts?fltCategory[]=xx&amp;fltCategory[]=yy</li>
+	    </ul>
+		<p> You	would just need to replace 'xx' with your Jackets category ID and 'yy' with your Pants category ID.</p>
+		<p>You can also hook in to the filter with php.<br>
+	    For example if you had a category called 'Jeans' and within that category you sold Levis jeans, you could add the link  'More Levis Jeans' to the product page to direct customers to view more Levis jeans as follows</p>
+		<ul class="Steps">
+		  <li>echo '&lt;a rel=&quot;nofollow&quot; href=&quot;' . zen_href_link(FILENAME_DEFAULT, 'cPath=' . $cPath . '&amp;' . DYNAMIC_FILTER_PREFIX . DYNAMIC_FILTER_MANUFACTURER_GROUP . '[]=' . zen_get_products_manufacturers_id($products_id_current), 'NONSSL') . '&quot;&gt;' . 'More ' . $manufacturers_name . ' ' . $categories-&gt;fields['categories_name'] . '&lt;/a&gt;';</li>
+	    </ul>
+		<p class="BackToTableOfContents"><a href="#top">Back to top</a></p>
+</div>
+</div>
+<!--End sc4-->
+
+<!--Begin sc5-->
+<div class="tabcontent" id="sc5" style="display: block;">
+<div class="textcontent">
+<h3>CREDITS &amp; HISTORY</h3>
+<br>
+<strong>v1.0</strong> by Damian Taylor 
+<br>
+<br>
+Tested on:
+<ul style="margin-top:0">
+<li>Zen Cart 1.3.8a, Zen Cart 1.3.9h & Zen Cart 1.5.0</li>
+<li>php 5.2.17 & php 5.3.8</li>
+<li>MySQL 5.0.77</li>
+</ul>
+Tested with:
+<ul style="margin-top:0">
+<li>Ceon URI Mapping v4.0.7</li>
+<li>Stock By Attribute v4.7</li>
+<li>Simple Google Analytics v1.2.5</li>
+</ul>
+
+</div>
+</div>
+<!--End sc5-->
+
+<!--Begin sc6-->
+<div class="tabcontent" id="sc6" style="display: block;">
+<div class="textcontent">
+<h3>LICENSE</h3>
+<p>This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.</p>
+
+<p><strong>Always backup your shop and database before making changes.</strong></p>
+</div>
+</div>
+<!--End sc6-->
+
+</div>
+<!--end tabcontainer-->
+<script type="text/javascript">document.getElementById('sc2').style.display = 'none';</script>
+<script type="text/javascript">document.getElementById('sc3').style.display = 'none';</script>
+<script type="text/javascript">document.getElementById('sc4').style.display = 'none';</script>
+<script type="text/javascript">document.getElementById('sc5').style.display = 'none';</script>
+<script type="text/javascript">document.getElementById('sc6').style.display = 'none';</script>
+<script type="text/javascript">ShowTabs()</script>
+<script type="text/javascript">
+// We only show the tab links if JavaScript is available/active.
+<!--
+if (document.getElementById("slidetabsmenu") != null) {
+  document.getElementById('slidetabsmenu').style.display = "block";
+}
+//-->
+</script>
+</div>
+
+</body></html>
