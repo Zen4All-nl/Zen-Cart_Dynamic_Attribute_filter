@@ -35,96 +35,96 @@ if (isset($_GET['alpha_filter_id']) && (int)$_GET['alpha_filter_id'] > 0) {
 // bof dynamic filter 2 of 2
     if (isset($_GET['filter_id']) && zen_not_null($_GET['filter_id']) || isset($_GET[DYNAMIC_FILTER_PREFIX . $categoryGroup])) {
 // We are asked to show only a specific category
-      $listing_sql = "select DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id,
-       p.manufacturers_id, m.manufacturers_name, p.products_price, p.products_tax_class_id, pd.products_description,
-         IF(s.status = 1, s.specials_new_products_price, NULL) as specials_new_products_price,
-         IF(s.status = 1, s.specials_new_products_price, p.products_price) as final_price,
-         p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status
-       from " . TABLE_PRODUCTS . " p
-       left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id
-       left join " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id
-       left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id
-       JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id" .
-       ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a on p.products_id = p2a.products_id" .
-       " JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id" .
-       " JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
-       (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '');
-
-      $listing_sql .= " WHERE p.products_status = 1" .
-         " and m.manufacturers_id = '" . (int)$_GET['manufacturers_id'] . "'" .
-         " and pd.language_id = '" . (int)$_SESSION['languages_id'] . "'" .
-         $filter .
-         " GROUP BY p.products_id " .
-         $having .
-         $alpha_sort;
-    } else {
-// We show them all
-      $listing_sql = "select DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, pd.products_description, IF(s.status = 1, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status = 1, s.specials_new_products_price, p.products_price) as final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status";
-
-      $listing_sql .= " FROM " . TABLE_PRODUCTS . " p" .
-     " LEFT JOIN " . TABLE_SPECIALS . " s on p.products_id = s.products_id" .
-     " LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id" .
-     " LEFT JOIN " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id" .
-       ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a on p.products_id = p2a.products_id" .
-       " JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id" .
-     " JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
-     (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '');
+      $listing_sql = "SELECT DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id, p.manufacturers_id, m.manufacturers_name, p.products_price, p.products_tax_class_id, pd.products_description,
+                      IF(s.status = 1, s.specials_new_products_price, NULL) AS specials_new_products_price,
+                      IF(s.status = 1 , s.specials_new_products_price, p.products_price) AS final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status
+                      FROM " . TABLE_PRODUCTS . " p
+                      LEFT JOIN " . TABLE_SPECIALS . " s ON p.products_id = s.products_id
+                      LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON p.products_id = pd.products_id
+                      LEFT JOIN " . TABLE_MANUFACTURERS . " m ON p.manufacturers_id = m.manufacturers_id
+                      JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id" .
+                        ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a ON p.products_id = p2a.products_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
+                        (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id " : "") : '');
 
       $listing_sql .= " WHERE p.products_status = 1
-       and pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
-       and m.manufacturers_id = '" . (int)$_GET['manufacturers_id'] . "'" .
-       $filter .
-     " GROUP BY p.products_id " .
-     $having .
-     $alpha_sort;
+                        AND m.manufacturers_id = '" . (int)$_GET['manufacturers_id'] . "'
+                        AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'" .
+                        $filter .
+                        " GROUP BY p.products_id " .
+                        $having .
+                        $alpha_sort;
+    } else {
+// We show them all
+      $listing_sql = "SELECT DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, pd.products_description,
+                      IF(s.status = 1, s.specials_new_products_price, NULL) AS specials_new_products_price,
+                      IF(s.status = 1, s.specials_new_products_price, p.products_price) AS final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status";
+
+      $listing_sql .= " FROM " . TABLE_PRODUCTS . " p
+                      LEFT JOIN " . TABLE_SPECIALS . " s on p.products_id = s.products_id
+                      LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id
+                      LEFT JOIN " . TABLE_MANUFACTURERS . " m ON p.manufacturers_id = m.manufacturers_id" .
+                        ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a ON p.products_id = p2a.products_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id" .
+                        (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id " : "") : '');
+
+      $listing_sql .= " WHERE p.products_status = 1
+                        AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
+                        AND m.manufacturers_id = '" . (int)$_GET['manufacturers_id'] . "'" .
+                        $filter .
+                        " GROUP BY p.products_id " .
+                        $having .
+                        $alpha_sort;
     }
   } else {
 // show the products in a given category
     if (isset($_GET['filter_id']) && zen_not_null($_GET['filter_id']) || isset($_GET[DYNAMIC_FILTER_PREFIX . $manufacturerGroup])) {
 // We are asked to show only specific manufacturer
-      $listing_sql = "SELECT DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, pd.products_description, IF(s.status = 1, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status = 1, s.specials_new_products_price, p.products_price) as final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status";
+      $listing_sql = "SELECT DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, pd.products_description,
+                      IF(s.status = 1, s.specials_new_products_price, NULL) AS specials_new_products_price,
+                      IF(s.status = 1, s.specials_new_products_price, p.products_price) AS final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status";
 
-      $listing_sql .= " FROM " . TABLE_PRODUCTS . " p" .
-     " LEFT JOIN " . TABLE_SPECIALS . " s on p.products_id = s.products_id" .
-     " LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id" .
-     " LEFT JOIN " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id" .
-     " JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id" .
-       ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a on p.products_id = p2a.products_id" .
-       " JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id" .
-     " JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
-     (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '');
-
-      $listing_sql .= " WHERE p.products_status = 1" .
-       " and pd.language_id = '" . (int)$_SESSION['languages_id'] . "'" .
-       " and p2c.categories_id = '" . (int)$current_category_id . "'" .
-       $filter .
-     " GROUP BY p.products_id " .
-     $having .
-       $alpha_sort;
-    } else {
-// We show them all
-      $listing_sql = "SELECT DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id,
-       p.manufacturers_id, p.products_price, p.products_tax_class_id, pd.products_description, IF(s.status = 1,
-       s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status =1, s.specials_new_products_price,
-       p.products_price) as final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping,
-       p.products_qty_box_status";
-
-      $listing_sql .= " FROM " . TABLE_PRODUCTS . " p" .
-     " LEFT JOIN " . TABLE_SPECIALS . " s on p.products_id = s.products_id" .
-     " LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id" .
-     " JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id" .
-       ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a on p.products_id = p2a.products_id" .
-       " JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id" .
-     " JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
-     (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '');
+      $listing_sql .= " FROM " . TABLE_PRODUCTS . " p
+                      LEFT JOIN " . TABLE_SPECIALS . " s ON p.products_id = s.products_id
+                      LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON p.products_id = pd.products_id
+                      LEFT JOIN " . TABLE_MANUFACTURERS . " m ON p.manufacturers_id = m.manufacturers_id
+                      JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ON p.products_id = p2c.products_id" .
+                        ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a ON p.products_id = p2a.products_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id" .
+                        (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id " : "") : '');
 
       $listing_sql .= " WHERE p.products_status = 1
-       and pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
-       and p2c.categories_id = '" . (int)$current_category_id . "'" .
-       $filter .
-     " GROUP BY p.products_id " .
-     $having .
-       $alpha_sort;
+                        AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
+                        AND p2c.categories_id = '" . (int)$current_category_id . "'" .
+                        $filter .
+                        " GROUP BY p.products_id " .
+                        $having .
+                        $alpha_sort;
+    } else {
+// We show them all
+      $listing_sql = "SELECT DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, pd.products_description,
+                      IF(s.status = 1, s.specials_new_products_price, NULL) AS specials_new_products_price,
+                      IF(s.status =1, s.specials_new_products_price, p.products_price) AS final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status";
+
+      $listing_sql .= " FROM " . TABLE_PRODUCTS . " p
+                        LEFT JOIN " . TABLE_SPECIALS . " s ON p.products_id = s.products_id
+                        LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON p.products_id = pd.products_id
+                        JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ON p.products_id = p2c.products_id" .
+                          ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a ON p.products_id = p2a.products_id
+                        JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
+                        JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id" .
+                          (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id " : "") : '');
+
+      $listing_sql .= " WHERE p.products_status = 1
+                        AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
+                        AND p2c.categories_id = '" . (int)$current_category_id . "'" .
+                        $filter .
+                        " GROUP BY p.products_id " .
+                        $having .
+                        $alpha_sort;
     }
   }
 // eof dynamic filter 2 of 2
