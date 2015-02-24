@@ -8,6 +8,5 @@
  */
 
 // Dynamic Filter Filename Defines
-/*
- * Left empty on purpose. This file is obsolete and can be deleted
- */
+  define('BOX_CONFIGURATION_DYNAMIC_FILTER', 'Dynamic Filter');
+?>

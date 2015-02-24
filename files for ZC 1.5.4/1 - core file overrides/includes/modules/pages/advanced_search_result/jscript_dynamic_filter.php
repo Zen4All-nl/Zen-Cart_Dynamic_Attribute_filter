@@ -10,5 +10,5 @@
  */
 
 if (FILTER_SEARCH == 'Yes' && FILTER_STYLE != 'Dropdown' && FILTER_OPTIONS_STYLE == 'Expand') {
-  echo '<script type="text/javascript" src="' . DIR_WS_TEMPLATE  . 'jscript/dynamic_filter/jquery.dynamic_filter.php"></script>';
+echo '<script type="text/javascript" src="' . DIR_WS_TEMPLATE  . 'jscript/dynamic_filter/jquery.dynamic_filter.php"></script>';
 }

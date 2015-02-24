@@ -9,7 +9,7 @@
  */
 // draw filter form
 $content = '';
-$content .= '<div id="' . str_replace('_', '-', $box_id . 'Content') . '" class="sideBoxContent">' . "\n";
+$content .= '<div id="' . str_replace('_', '-', $box_id . 'Content') . '" class="sideBoxContent">';
 $content .= zen_draw_form('product_filter_form', '', 'get');
 
 // draw hidden fields
@@ -21,7 +21,9 @@ while (list($key, $value) = each($_GET)) {
     }
   }
 }
-/* * ********************************start manufacturer/category drop down/link/check boxes********************************************* */
+/*
+ * start manufacturer/category drop down/link/check boxes
+ */
 
 // Only display if standard zen cart category/manufacturer dropdown is disabled
 if (PRODUCT_LIST_FILTER == 0) {
@@ -77,23 +79,13 @@ if (PRODUCT_LIST_FILTER == 0) {
         $content .= '</ul>';
       }
       if (FILTER_OPTIONS_STYLE == 'Expand' && count($unfilteredCategories) > FILTER_MAX_OPTIONS) {
-        $content .= '<a class="dFilterToggle" href="#">' . DYNAMIC_FILTER_TEXT_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', DYNAMIC_FILTER_TEXT_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
+        $content .= '<a class="dFilterToggle" href="#">' . TEXT_DYNAMIC_FILTER_SHOW_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', TEXT_DYNAMIC_FILTER_SHOW_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
       }
       $content .= '</div></div>';
     }
   }
   if (!isset($_GET['manufacturers_id'])) {
     if (count($unfilteredManufacturers) > 0) {
-      $group = DYNAMIC_FILTER_PREFIX . str_replace(' ', '', DYNAMIC_FILTER_MANUFACTURER_GROUP);
-      $resetParms[] = $group;
-      $parameters = zen_get_all_get_params(array($group));
-      $dropdownDefault = str_replace('%n', DYNAMIC_FILTER_MANUFACTURER_GROUP, DYNAMIC_FILTER_DROPDOWN_DEFAULT);
-
-      $manufacturers = $db->Execute("SELECT manufacturers_id, manufacturers_name, IF(manufacturers_id IN(" . implode(',', $filteredManufacturers) . "), 'Y', 'N') as flag" .
-              " FROM " . TABLE_MANUFACTURERS .
-              " WHERE manufacturers_id IN (" . implode(',', $unfilteredManufacturers) . ")" .
-              " ORDER BY manufacturers_name");
-
       $content .= '<hr width="90%" size="0" />';
       $content .= '<div><div class="dFilter"><p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . DYNAMIC_FILTER_TEXT_MANUFACTURER . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
       if (isset($_GET[$group]) && array_filter($_GET[$group])) {
@@ -143,7 +135,7 @@ if (PRODUCT_LIST_FILTER == 0) {
         $content .= '</ul>';
       }
       if (FILTER_OPTIONS_STYLE == 'Expand' && count($unfilteredManufacturers) > FILTER_MAX_OPTIONS) {
-        $content .= '<a class="dFilterToggle" href="#">' . DYNAMIC_FILTER_TEXT_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', DYNAMIC_FILTER_TEXT_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
+        $content .= '<a class="dFilterToggle" href="#">' . TEXT_DYNAMIC_FILTER_SHOW_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', TEXT_DYNAMIC_FILTER_SHOW_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
       }
       $content .= '</div>';
       $content .= '</div>';
@@ -151,98 +143,46 @@ if (PRODUCT_LIST_FILTER == 0) {
   }
 }
 
-/* * ********************************end manufacturer/category drop down/link/check boxes********************************************* */
+/*
+ * end manufacturer/category drop down/link/check boxes
+ */
 
 
-/* * ******************************************start price range link/check boxes************************************************** */
-if (count($priceArray) > 0) {
-  $priceGap = floor(($max - $min) / (FILTER_MAX_RANGES - 1));
-  if (FILTER_MIN_PRICE > 0 && $priceGap < FILTER_MIN_PRICE) {
-    $priceGap = FILTER_MIN_PRICE;
-  }
-  if (FILTER_MAX_PRICE > 0 && $priceGap > FILTER_MAX_PRICE) {
-    $priceGap = FILTER_MAX_PRICE;
-  }
-
-  $group = DYNAMIC_FILTER_PREFIX . str_replace(' ', '', DYNAMIC_FILTER_PRICE_GROUP);
-  $resetParms[] = $group;
-  $parameters = zen_get_all_get_params();
-  $dropdownDefault = str_replace('%n', DYNAMIC_FILTER_PRICE_GROUP, DYNAMIC_FILTER_DROPDOWN_DEFAULT);
-  $priceCount = 0;
-  $prices = '';
-
-  for ($start = $min - 0.5; $start < $max; $start = $end + 0.01) {
-    $end = round($start + $priceGap);
-    if ($end < $max) {
-      $text = $currency_symbol . round($start * 0.21 * $conversion_rate) . ' -- ' . $currency_symbol . round($end * 0.21 * $conversion_rate);
+/*
+ * start price range link/check boxes
+ */
+if (SHOW_FILTER_BY_PRICE == 'Yes') {
+  if (count($priceArray) > 0) {
+    $content .= '<hr width="90%" size="0" />';
+    $content .= '<div><div class="dFilter"><p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . DYNAMIC_FILTER_TEXT_PRICE . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
+    if (isset($_GET[$group]) && array_filter($_GET[$group])) {
+      $content .= '<div class="dFilterClear"><a href="' . zen_href_link($_GET['main_page'], zen_get_all_get_params(array($group)), 'NONSSL') . '">' . zen_image(DIR_WS_TEMPLATE_IMAGES . 'clear_filter.png', DYNAMIC_FILTER_BUTTON_CLEAR_FILTER_ALT) . '</a></div>';
+    }
+    if (strtok(FILTER_STYLE, " ") == 'Dropdown') {
+      $content .= '<select name="' . $group . '[]" class="dFilterDrop"' . (FILTER_STYLE == 'Dropdown - Single' ? ' onchange="this.form.submit();"' : '') . '>' . '<option value=""' . (!isset($_GET[$group]) || !array_filter($_GET[$group]) ? ' selected="selected"' : '') . '>' . $dropdownDefault . '</option>';
+      $content .= $prices;
+      $content .= '</select>';
     } else {
-      $text = $currency_symbol . round($start * 0.21 * $conversion_rate) . ' and over';
+      $content .= '<ul' . ($priceCount > FILTER_MAX_OPTIONS ? (FILTER_OPTIONS_STYLE == 'Scroll' ? ' class="dFilterScroll">' : ' class="dFilterExpand">') : '>');
+      $content .= $prices;
+      $content .= '</ul>';
     }
-    foreach ($priceArray as $price) {
-      if ($start <= $price && $end >= $price) {
-        if (isset($_GET[$group]) && in_array($start . '--' . $end, $_GET[$group])) {
-          $linkClass = 'selected';
-        } else {
-          $linkClass = 'enabled';
-        }
-        break;
-      } else {
-        $linkClass = 'disabled';
-      }
+    if (FILTER_OPTIONS_STYLE == 'Expand' && $priceCount > FILTER_MAX_OPTIONS) {
+      $content .= '<a class="dFilterToggle" href="#">' . TEXT_DYNAMIC_FILTER_SHOW_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', TEXT_DYNAMIC_FILTER_SHOW_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
     }
-
-    $onClick = '';
-    if (FILTER_GOOGLE_TRACKING != 'No') {
-      $onClick .= $trackingStart . '"filterAction", "' . ($linkClass != 'selected' ? 'addFilter' : 'removeFilter') . '", "' . $pageName . ';' . DYNAMIC_FILTER_PRICE_GROUP . '=' . $start . '-' . $end . '"' . $trackingEnd;
-    }
-    if (FILTER_STYLE == 'Checkbox - Single') {
-      $onClick .= ' this.form.submit();';
-    }
-
-    if (FILTER_METHOD != 'Hidden' || $linkClass != 'disabled') {
-      $hrefLink = $group . '[]=' . $start . '--' . $end;
-      switch (strtok(FILTER_STYLE, " ")) {
-        case 'Checkbox':
-          $prices .= '<li class="dFilterLink">' . zen_draw_checkbox_field($group . '[]', $start . '--' . $end, (isset($_GET[$group]) && in_array($start . '--' . $end, $_GET[$group]) ? true : false), ($linkClass == 'disabled' ? 'disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Checkbox - Single' ? ' onclick="' . $onClick . '"' : '')) . $text . '</li>';
-          break;
-        case 'Link':
-          $prices .= '<li class="dFilterLink"><a class="' . $linkClass . '"' . ($linkClass != 'disabled' ? ' rel="nofollow" href="' . zen_href_link($_GET['main_page'], ($linkClass != 'selected' ? $parameters . $hrefLink : str_replace(array($hrefLink, '&' . $hrefLink), array("", ""), $parameters)), 'NONSSL') . '"' . ($onClick != '' ? ' onclick="' . $onClick . '"' : '') : '') . ' >' . $text . '</a></li>';
-          break;
-        case 'Dropdown':
-          $prices .= '<option value="' . $start . '--' . $end . '"' . ($linkClass == 'selected' ? ' selected="selected"' : '') . ($linkClass == 'disabled' ? ' disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Dropdown - Single' ? ' onclick="' . $onClick . '"' : '') . ' >' . $text . '</option>';
-          break;
-      }
-    }
-    ++$priceCount;
+    $content .= '</div>';
+    $content .= '</div>';
   }
-
-  $content .= '<hr width="90%" size="0" />';
-  $content .= '<div><div class="dFilter"><p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . DYNAMIC_FILTER_TEXT_PRICE . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
-  if (isset($_GET[$group]) && array_filter($_GET[$group])) {
-    $content .= '<div class="dFilterClear"><a href="' . zen_href_link($_GET['main_page'], zen_get_all_get_params(array($group)), 'NONSSL') . '">' . zen_image(DIR_WS_TEMPLATE_IMAGES . 'clear_filter.png', DYNAMIC_FILTER_BUTTON_CLEAR_FILTER_ALT) . '</a></div>';
-  }
-  if (strtok(FILTER_STYLE, " ") == 'Dropdown') {
-    $content .= '<select name="' . $group . '[]" class="dFilterDrop"' . (FILTER_STYLE == 'Dropdown - Single' ? ' onchange="this.form.submit();"' : '') . '>' . '<option value=""' . (!isset($_GET[$group]) || !array_filter($_GET[$group]) ? ' selected="selected"' : '') . '>' . $dropdownDefault . '</option>';
-  } else {
-    $content .= '<ul' . ($priceCount > FILTER_MAX_OPTIONS ? (FILTER_OPTIONS_STYLE == 'Scroll' ? ' class="dFilterScroll">' : ' class="dFilterExpand">') : '>');
-  }
-  $content .= $prices;
-  if (strtok(FILTER_STYLE, " ") == 'Dropdown') {
-    $content .= '</select>';
-  } else {
-    $content .= '</ul>';
-  }
-  if (FILTER_OPTIONS_STYLE == 'Expand' && $priceCount > FILTER_MAX_OPTIONS) {
-    $content .= '<a class="dFilterToggle" href="#">' . DYNAMIC_FILTER_TEXT_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', DYNAMIC_FILTER_TEXT_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
-  }
-  $content .= '</div>';
-  $content .= '</div>';
 }
 
-/* * ******************************************end price range link/check boxes************************************************** */
+/*
+ * end price range link/check boxes
+ */
 
 
-/* * ******************************************start attribute link/check boxes************************************************** */
+/*
+ * start attribute link/check boxes
+ */
 
 if (count($filteredProducts) > 0) {
   while (!$attributes->EOF) {
@@ -250,7 +190,7 @@ if (count($filteredProducts) > 0) {
     if ($attributes->fields['products_options_name'] != $savName) {
       $options_array = array();
       if ($savName != '') {
-        //$content .= '<hr width="90%" size="0" />';
+        $content .= '<hr width="90%" size="0" />';
         $content .= '<div>';
         $content .= '<div class="dFilter">';
         $content .= '<p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . htmlspecialchars(html_entity_decode($savName, ENT_QUOTES)) . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
@@ -267,7 +207,7 @@ if (count($filteredProducts) > 0) {
           $content .= '</ul>';
         }
         if (FILTER_OPTIONS_STYLE == 'Expand' && $attrCount > FILTER_MAX_OPTIONS) {
-          $content .= '<a class="dFilterToggle" href="#">' . DYNAMIC_FILTER_TEXT_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', DYNAMIC_FILTER_TEXT_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
+          $content .= '<a class="dFilterToggle" href="#">' . TEXT_DYNAMIC_FILTER_SHOW_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', TEXT_DYNAMIC_FILTER_SHOW_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
         }
         $content .= '</div>';
         $content .= '</div>';
@@ -303,13 +243,13 @@ if (count($filteredProducts) > 0) {
         $hrefLink = $group . '[]=' . rawurlencode($attributes->fields['products_options_values_name']);
         switch (strtok(FILTER_STYLE, " ")) {
           case 'Checkbox':
-            $filters .= '<li class="dFilterLink">' . zen_draw_checkbox_field($group . '[]', $attributes->fields['products_options_values_name'], (isset($_GET[$group]) && in_array($attributes->fields['products_options_values_name'], $_GET[$group]) ? true : false), ($linkClass == 'disabled' ? 'disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Checkbox - Single' ? ' onclick="' . $onClick . '"' : '')) . '&nbsp;' . htmlspecialchars(html_entity_decode($attributes->fields['products_options_values_name'], ENT_QUOTES)) . '&nbsp;<span class="no_of_attributes">(' . htmlspecialchars(html_entity_decode($attributes->fields['quantity'], ENT_QUOTES)) . ')</span>' . '</li>';
+            $filters .= '<li class="dFilterLink">' . zen_draw_checkbox_field($group . '[]', $attributes->fields['products_options_values_name'], (isset($_GET[$group]) && in_array($attributes->fields['products_options_values_name'], $_GET[$group]) ? true : false), ($linkClass == 'disabled' ? 'disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Checkbox - Single' ? ' onclick="' . $onClick . '"' : '')) . '&nbsp;' . htmlspecialchars(html_entity_decode($attributes->fields['products_options_values_name'], ENT_QUOTES)) . '&nbsp;<span class="no_of_attributes">(' . htmlspecialchars(html_entity_decode($attributes->fields['flag'], ENT_QUOTES)) . ')</span>' . '</li>';
             break;
           case 'Link':
-            $filters .= '<li class="dFilterLink"><a class="' . $linkClass . '"' . ($linkClass != 'disabled' ? ' rel="nofollow" href="' . zen_href_link($_GET['main_page'], ($linkClass != 'selected' ? $parameters . $hrefLink : str_replace(array($hrefLink, '&' . $hrefLink), array("", ""), $parameters)), 'NONSSL') . '"' . ($onClick != '' ? ' onclick="' . $onClick . '"' : '') : '') . ' >' . htmlspecialchars(html_entity_decode($attributes->fields['products_options_values_name'], ENT_QUOTES)) . '</a></li>';
+            $filters .= '<li class="dFilterLink"><a class="' . $linkClass . '"' . ($linkClass != 'disabled' ? ' rel="nofollow" href="' . zen_href_link($_GET['main_page'], ($linkClass != 'selected' ? $parameters . $hrefLink : str_replace(array($hrefLink, '&' . $hrefLink), array("", ""), $parameters)), 'NONSSL') . '"' . ($onClick != '' ? ' onclick="' . $onClick . '"' : '') : '') . ' >' . htmlspecialchars(html_entity_decode($attributes->fields['products_options_values_name'], ENT_QUOTES)) . ' {' . htmlspecialchars(html_entity_decode($attributes->fields['flag'], ENT_QUOTES)) . '}' . '</a></li>';
             break;
           case 'Dropdown':
-            $filters .= '<option value="' . htmlspecialchars(html_entity_decode($attributes->fields['products_options_values_name'], ENT_QUOTES)) . '"' . ($linkClass == 'selected' ? ' selected="selected"' : '') . ($linkClass == 'disabled' ? ' disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Dropdown - Single' ? ' onclick="' . $onClick . '"' : '') . ' >' . $attributes->fields['products_options_values_name'] . '</option>';
+            $filters .= '<option value="' . htmlspecialchars(html_entity_decode($attributes->fields['products_options_values_name'], ENT_QUOTES)) . '"' . ($linkClass == 'selected' ? ' selected="selected"' : '') . ($linkClass == 'disabled' ? ' disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Dropdown - Single' ? ' onclick="' . $onClick . '"' : '') . ' >' . $attributes->fields['products_options_values_name'] . ' {' . htmlspecialchars(html_entity_decode($attributes->fields['flag'], ENT_QUOTES)) . '}' . '</option>';
             break;
         }
         ++$attrCount;
@@ -320,7 +260,7 @@ if (count($filteredProducts) > 0) {
     $attributes->MoveNext();
   }
   if ($savName != "") {
-    //$content .= '<hr width="90%" size="0" />';
+    $content .= '<hr width="90%" size="0" />';
     $content .= '<div><div class="dFilter"><p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . htmlspecialchars(html_entity_decode($savName, ENT_QUOTES)) . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
     if (isset($_GET[$group]) && array_filter($_GET[$group])) {
       $content .= '<div class="dFilterClear"><a href="' . zen_href_link($_GET['main_page'], zen_get_all_get_params(array($group)), 'NONSSL') . '">' . zen_image(DIR_WS_TEMPLATE_IMAGES . 'clear_filter.png', DYNAMIC_FILTER_BUTTON_CLEAR_FILTER_ALT) . '</a></div>';
@@ -336,16 +276,19 @@ if (count($filteredProducts) > 0) {
     }
   }
   if (FILTER_OPTIONS_STYLE == 'Expand' && $attrCount > FILTER_MAX_OPTIONS) {
-    $content .= '<a class="dFilterToggle" href="#">' . DYNAMIC_FILTER_TEXT_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', DYNAMIC_FILTER_TEXT_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
+    $content .= '<a class="dFilterToggle" href="#">' . TEXT_DYNAMIC_FILTER_SHOW_MORE . zen_image(DIR_WS_TEMPLATE_IMAGES . 'arrow_more.gif', TEXT_DYNAMIC_FILTER_SHOW_MORE, '', '', 'class="dFilterToggleImg"') . '</a>';
   }
   $content .= '</div>';
   $content .= '</div>';
 }
 
-/* * ******************************************end attribute link/check boxes************************************************** */
+/*
+ * end attribute link/check boxes
+ */
 
-
-/* * ******************************************start filter buttons************************************************** */
+/*
+ * start filter buttons
+ */
 
 if (FILTER_STYLE == 'Dropdown - Multi' || FILTER_STYLE == 'Checkbox - Multi') {
   $content .= '<div id="dFilterButton">';
@@ -362,8 +305,9 @@ foreach ($resetParms as $reset) {
 }
 $content .= '</div>';
 
-/* * ******************************************end filter buttons************************************************** */
+/*
+ * end filter buttons
+ */
 
-$content .= "</form>";
-
+$content .= '</form>';
 $content .= '</div>';
