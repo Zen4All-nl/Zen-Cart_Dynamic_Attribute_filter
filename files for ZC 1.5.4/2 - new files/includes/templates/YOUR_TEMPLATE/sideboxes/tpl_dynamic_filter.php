@@ -9,7 +9,7 @@
  */
 // draw filter form
 $content = '';
-$content .= '<div id="' . str_replace('_', '-', $box_id . 'Content') . '" class="sideBoxContent">';
+$content .= '<div id="' . str_replace('_', '-', $box_id . 'Content') . '" class="sideBoxContent">' . "\n";
 $content .= zen_draw_form('product_filter_form', '', 'get');
 
 // draw hidden fields
