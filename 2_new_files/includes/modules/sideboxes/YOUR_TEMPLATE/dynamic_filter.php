@@ -223,7 +223,11 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_
                                 GROUP BY po.products_options_name, pov.products_options_values_name
                                 ORDER BY po.products_options_name, pov.products_options_values_sort_order");
 // EOF language fix
-
+if(FILTER_OPTIONS_LEFT == 'Yes'){
+  $numberOfProductsLeft = '&nbsp;<span class="numberOfProductsLeft">(' . htmlspecialchars(html_entity_decode($attributes->fields['flag'], ENT_QUOTES)) . ')</span>';
+} else {
+  $numberOfProductsLeft = '';
+}
     $savName = '';
     $savValue = '';
   }

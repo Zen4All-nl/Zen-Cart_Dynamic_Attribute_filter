@@ -70,4 +70,3 @@ if ($having != '') {
 if ($filter_attr == true && defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK')) {
   $filter .= ' AND p2as.quantity > 0 AND FIND_IN_SET(p2a.products_attributes_id, p2as.stock_attributes)';
 }
-?>
