@@ -7,4 +7,4 @@ Customers can filter by manufacturer, category, price and any attribute. </p>
 <p><s>The Stock by Attribute module is supported (tested on version 4.7 but should work with all versions) if installed; only items with stock will be shown in the list.</s></p>
 <p>Google Event Tracking is supported and has been tested to work with Simple Google Analytics v1.2.5 but should work with all versions. </p>
 
-for now only Zen Cart 1.5.3 is supported.
+only Zen Cart 1.5.4 is supported.
