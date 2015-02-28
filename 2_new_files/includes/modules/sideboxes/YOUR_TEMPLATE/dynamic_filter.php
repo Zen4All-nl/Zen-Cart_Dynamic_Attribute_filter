@@ -220,6 +220,8 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_
                                 (FILTER_OPTIONS_EXCLUDE != '' ? " AND p2a.options_id NOT IN (" . FILTER_OPTIONS_EXCLUDE . ")" : '') .
                                 (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
                                   AND p2as.quantity > 0" : "") . "
+                                AND po.products_options_type != '1'
+                                AND po.products_options_type != '4'
                                 GROUP BY po.products_options_name, pov.products_options_values_name
                                 ORDER BY po.products_options_name, pov.products_options_values_sort_order");
 // EOF language fix
