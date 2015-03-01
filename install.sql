@@ -10,7 +10,6 @@ SET @cid=last_insert_id();
 UPDATE configuration_group SET sort_order = @cid WHERE configuration_group_id = @cid;
 INSERT INTO configuration (configuration_id, configuration_title, configuration_key , configuration_value, configuration_description, configuration_group_id, sort_order, last_modified, date_added, use_function, set_function)
 VALUES (NULL, 'Enable on Category Pages', 'FILTER_CATEGORY', 'Yes', 'Enable the filter on category pages?', @cid, '10', now(), now(), NULL, "zen_cfg_select_option(array('Yes', 'No'),"),
-  (NULL, 'Enable on Category Pages', 'FILTER_CATEGORY', 'Yes', 'Enable the filter on category pages?', @cid, '10', now(), now(), NULL, "zen_cfg_select_option(array('Yes', 'No'),"),
   (NULL, 'Enable on All Products Page', 'FILTER_ALL', 'Yes', 'Enable the filter on all products page?', @cid, '20', now(), now(), NULL, "zen_cfg_select_option(array('Yes', 'No'),"),
   (NULL, 'Enable on New Products Page', 'FILTER_NEW', 'Yes', 'Enable the filter on new products page?', @cid, '30', now(), now(), NULL, "zen_cfg_select_option(array('Yes', 'No'),"),
   (NULL, 'Enable on Featured Products Page', 'FILTER_FEATURED', 'Yes', 'Enable the filter on featured products page?', @cid, '40', now(), now(), NULL, "zen_cfg_select_option(array('Yes', 'No'),"),
@@ -28,7 +27,6 @@ VALUES (NULL, 'Enable on Category Pages', 'FILTER_CATEGORY', 'Yes', 'Enable the 
   (NULL, 'Exclude Options', 'FILTER_OPTIONS_EXCLUDE', '', 'Enter the list of option IDs to be excluded from the filter, separated by commas (i.e. 1,2,3)<br />The option numbers listed here will <strong>not</strong> appear in the filter.<br />Leave blank to deactivate.', @cid, '150', now(), now(), NULL, NULL),
   (NULL, 'Google Event Tracking', 'FILTER_GOOGLE_TRACKING', 'No', 'Use Google Event Tracking?<br /><br /><strong>No</strong> - Do not use Google Event Tracking<br /><strong>ga.js</strong> - Use traditional ga.js Google Event Tracking method<br /><strong>Asynchronous</strong> - Use new asynchronous Google Event Tracking method<br /><br /><strong>Note: Requires Google Analytics Code</strong>', @cid, '160', now(), now(), NULL, "zen_cfg_select_option(array('No', 'ga.js', 'Asynchronous'),"),
   (NULL, 'Enable products left', 'FILTER_OPTIONS_LEFT', 'Yes', 'Do you want to show the number of products left to be filtered to show?', @cid, '65', now(), now(), NULL, "zen_cfg_select_option(array('Yes', 'No'),");
-
 
 /*
 zencart 1.5 mods
