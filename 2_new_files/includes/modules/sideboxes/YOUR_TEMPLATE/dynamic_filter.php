@@ -103,12 +103,13 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_
         $dropdownDefault = str_replace('%n', DYNAMIC_FILTER_CATEGORY_GROUP, DYNAMIC_FILTER_DROPDOWN_DEFAULT);
 
 // BOF language fix by a_berezin
-        $categories = $db->Execute("SELECT categories_id, categories_name,
-                                    IF(categories_id IN (" . implode(',', $filteredCategories) . "), 'Y', 'N') AS flag
-                                    FROM " . TABLE_CATEGORIES_DESCRIPTION . "
-                                    WHERE categories_id IN (" . implode(',', $unfilteredCategories) . ")" . "
-                                    AND language_id=" . (int)$_SESSION['languages_id'] . "
-                                    ORDER BY categories_name");
+        $categories = $db->Execute("SELECT cd.categories_id, cd.categories_name,
+                                    IF(cd.categories_id IN (" . implode(',', $filteredCategories) . "), 'Y', 'N') AS flag
+                                    FROM " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd
+                                    WHERE cd.categories_id IN (" . implode(',', $unfilteredCategories) . ")" . "
+                                    AND cd.language_id=" . (int)$_SESSION['languages_id'] . "
+                                    AND c.categories_id = cd.categories_id
+                                    ORDER BY c.sort_order, cd.categories_name");
 // EOF language fix
       }
     }
