@@ -222,15 +222,15 @@ $zco_notifier->notify('NOTIFY_SEARCH_SELECT_STRING');
 
 // bof dynamic filter 2 of 4
 $from_str = "FROM " . TABLE_PRODUCTS . " p
-             LEFT JOIN " . TABLE_MANUFACTURERS . " m
-             USING(manufacturers_id)" .
-             " LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id" .
-             " JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id" .
-             " JOIN " . TABLE_CATEGORIES . " c on p2c.categories_id = c.categories_id" .
-             " LEFT JOIN " . TABLE_META_TAGS_PRODUCTS_DESCRIPTION . " mtpd ON mtpd.products_id= p2c.products_id AND mtpd.language_id = :languagesID" .
-            ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a on p.products_id = p2a.products_id" .
-            " JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id" .
-             " JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
+             LEFT JOIN " . TABLE_MANUFACTURERS . " m USING(manufacturers_id)
+             LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id
+             JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id
+             JOIN " . TABLE_CATEGORIES . " c on p2c.categories_id = c.categories_id
+             LEFT JOIN " . TABLE_META_TAGS_PRODUCTS_DESCRIPTION . " mtpd ON mtpd.products_id= p2c.products_id
+             AND mtpd.language_id = :languagesID" .
+             ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a on p.products_id = p2a.products_id
+             JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id
+             JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
              (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '');
 // eof dynamic filter 2 of 4
 

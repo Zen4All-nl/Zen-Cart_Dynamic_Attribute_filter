@@ -16,9 +16,9 @@ if (MAX_DISPLAY_SPECIAL_PRODUCTS > 0 ) {
   $specials_query_raw = "SELECT p.products_id, p.products_image, pd.products_name,
                           p.master_categories_id
                          FROM (" . TABLE_PRODUCTS . " p
-                         LEFT JOIN " . TABLE_SPECIALS . " s on p.products_id = s.products_id
-                         LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id )
-                         WHERE p.products_id = s.products_id and p.products_id = pd.products_id and p.products_status = '1'
+                         LEFT JOIN " . TABLE_SPECIALS . " s ON p.products_id = s.products_id
+                         LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON p.products_id = pd.products_id )
+                         WHERE p.products_id = s.products_id AND p.products_id = pd.products_id AND p.products_status = '1'
                          AND s.status = 1
                          AND pd.language_id = :languagesID
                          ORDER BY s.specials_date_added DESC";
