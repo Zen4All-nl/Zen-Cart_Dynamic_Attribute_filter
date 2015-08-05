@@ -6,7 +6,7 @@
  * Damian Taylor, March 2010
  */
 
-define('BOX_HEADING_FILTER', 'Narrow Your Results');
+define('BOX_HEADING_DYNAMIC_FILTER', 'Narrow Your Results');
 define('DYNAMIC_FILTER_TEXT_MANUFACTURER','Brand');
 define('DYNAMIC_FILTER_TEXT_CATEGORY','Category');
 define('DYNAMIC_FILTER_TEXT_PRICE','Price');
