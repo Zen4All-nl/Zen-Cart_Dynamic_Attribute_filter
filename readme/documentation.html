@@ -12,12 +12,12 @@
 
 <div id="slidetabsmenu" style="display: none;">
 <ul>
-  <li> <a onClick="expandcontent('sc1', this)" href="javascript:void(0)"><span>Overview</strong></a></li>
-  <li> <a onClick="expandcontent('sc2', this)" href="javascript:void(0)"><span>Install/Uninstall</strong></a></li>
-  <li> <a onClick="expandcontent('sc3', this)" href="javascript:void(0)"><span>Configuration</strong></a></li>
-  <li> <a onClick="expandcontent('sc4', this)" href="javascript:void(0)"><span>FAQs</strong></a></li>
-  <li> <a onClick="expandcontent('sc5', this)" href="javascript:void(0)"><span>Credits &amp; History</strong></a></li>
-  <li> <a onClick="expandcontent('sc6', this)" href="javascript:void(0)"><span>License</strong></a></li>
+  <li> <a onClick="expandcontent('sc1', this)" href="javascript:void(0)"><span>Overview</span></a></li>
+  <li> <a onClick="expandcontent('sc2', this)" href="javascript:void(0)"><span>Install/Uninstall</span></a></li>
+  <li> <a onClick="expandcontent('sc3', this)" href="javascript:void(0)"><span>Configuration</span></a></li>
+  <li> <a onClick="expandcontent('sc4', this)" href="javascript:void(0)"><span>FAQs</span></a></li>
+  <li> <a onClick="expandcontent('sc5', this)" href="javascript:void(0)"><span>Credits &amp; History</span></a></li>
+  <li> <a onClick="expandcontent('sc6', this)" href="javascript:void(0)"><span>License</span></a></li>
 </ul>
 </div>
 <br style="clear: both;">
@@ -51,21 +51,16 @@
       </ol>
       <br />
       <h4><a name="zen-cart-154" id="zen-cart-154"></a><u>Installation instructions for Zen Cart version 1.5.4 </u></h4>
-      <p>Before you start you should rename all folders in the distribution named 'YOUR_TEMPLATE' to the template folder name you are using, and rename the 'admin' folder in the distribution to the admin folder name you are using.</p>
-      <p>You will find 2 folders beneath the folder named 'dynamic_filter_1.5.0', one contains new files, one template override files and the other modified core files.</p>
+      <p>Before you start you should rename all folders in the distribution named 'YOUR_TEMPLATE' to the template folder name you are using, and rename the 'YOUR_ADMIN' folder to the admin folder name you are using.</p>
+      <p>You will find 4 folders, 1_modified_core_file, 2_new_files, 3_uninstall and the documentation folder.</p>
       <ol>
         <li>
-          <strong>New Files</strong><br />Copy the includes folder from the 'new files' folder into your store's main directory.<br>The files are already in the correct directory structure, so a single drag-and-drop of the folder into the root directory for the store will put the files in the correct locations.<br><strong>Please do not copy the files individually</strong> - doing so often results in files being missed out!<br>
+          <strong>New Files</strong><br />Copy the includes folder from the '2_new_files' folder into your store's main directory.<br>The files are already in the correct directory structure, so a single drag-and-drop of the folder into the root directory for the store will put the files in the correct locations.<br><strong>Please do not copy the files individually</strong> - doing so often results in files being missed out!<br>
             <ul class="Steps">
-              <li>admin/includes/extra_datafiles/dynamic_filter_filenames.php</li>
+              <li>YOUR_ADMIN/includes/languages/english/extra_definitions/dynamic_attribute_filter_definitions.php</li>
               <li>includes/extra_datafiles/dynamic_filter_filenames.php</li>
+              <li>includes/index_filters/YOUR_TEMPLATE/default_filter.php</li>li>
               <li>includes/languages/english/extra_definitions/YOUR_TEMPLATE/dynamic_filter_defines.php</li>
-              <li>includes/modules/pages/advanced_search_result/jscript_dynamic_filter.php</li>
-              <li>includes/modules/pages/featured_products/jscript_dynamic_filter.php</li>
-              <li>includes/modules/pages/index/jscript_dynamic_filter.php</li>
-              <li>includes/modules/pages/products_all/jscript_dynamic_filter.php</li>
-              <li>includes/modules/pages/products_new/jscript_dynamic_filter.php</li>
-              <li>includes/modules/pages/specials/jscript_dynamic_filter.php</li>
               <li>includes/modules/sideboxes/YOUR_TEMPLATE/dynamic_filter.php</li>
               <li>includes/modules/YOUR_TEMPLATE/dynamic_filter.php</li>
               <li>includes/templates/YOUR_TEMPLATE/buttons/english/clear_all_filters.png</li>
@@ -75,29 +70,14 @@
               <li>includes/templates/YOUR_TEMPLATE/images/arrow_more.gif</li>
               <li>includes/templates/YOUR_TEMPLATE/images/clear_filter.png</li>
               <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.js</li>
-              <li>includes/templates/YOUR_TEMPLATE/jscript/dynamic_filter/jquery.dynamic_filter.min.js</li>
               <li>includes/templates/YOUR_TEMPLATE/sideboxes/tpl_dynamic_filter.php</li>
             </ul>
           </li>
-          <li>
-            <strong>Template Override Files</strong><br />A single standard Zen Cart template file requires modifications.<br>The sample template file can be found within the 'template file overrides' folder in the distribution as follows.
-            <ul class="Steps">
-              <li>includes/index_filters/YOUR_TEMPLATE/default_filter.php</li>
-            </ul>
-            <ul>
-              <li>
-                <p>If  this template file <strong>hasn't</strong> already been modified for your store, the sample file included in this distribution can be copied into the store's template directory and will then override the standard version of the file included in the Zen Cart distribution.</p>
-              </li>
-              <li>
-                <p>If this template file <strong>has</strong> already been modified for your store, then you will need to copy the code changes from the sample file across to your modified file. The changes are clearly marked within the sample files  (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) in the distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br><strong>Do not make changes to your template files without taking a copy of them first so you can replace them later if needed!</strong></p>
-              </li>
-            </ul>
-          </li>
+          <p>If this template file <strong>has</strong> already been modified for your store, then you will need to copy the code changes from the sample file across to your modified file. The changes are clearly marked within the sample files  (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) in the distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br><strong>Do not make changes to your template files without taking a copy of them first so you can replace them later if needed!</strong></p>
           <li>
             <strong>Modified Core Files</strong><br>A few core Zen Cart files must be modified to work with the Dynamic Filter module.<br>If any of the core files this distribution uses have already been modified (because of another third party module being installed for example) then the changes for the respective files should be applied manually by copying across the appropriate sections of code required for the Dynamic Filter module. These sections are clearly marked (with &ldquo;// bof dynamic filter x of x&rdquo; and &ldquo;// eof dynamic filter x of x&rdquo; comments) within the sample files provided in this distribution and should be easy enough to copy across, especially if a &ldquo;diff&rdquo; software package (such as DiffMerge or WinMerge) is used.<br>The modified files can be found within the 'core file overrides' folder in the distribution as follows.<br /><strong>Do not  make changes to your core files without taking a copy of them first so you can replace them later if needed!</strong>
             <ul class="Steps">
               <li>includes/classes/split_page_results.php</li>
-              <li>includes/functions/functions_general.php</li>
               <li>includes/modules/pages/advanced_search_result/header_php.php</li>
               <li>includes/modules/pages/featured_products/header_php.php</li>
               <li>includes/modules/pages/products_all/header_php.php</li>
@@ -132,15 +112,15 @@
   </ul>
   
  <strong>A note about jQuery</strong><br>
- Some functions of Dynamic Filter require the jQuery library to be available (see configuration section for details on which features require jQuery). If your store does not already have jQuery available you can download it <a href="http://www.jquery.com/" target="_blank">here</a>.<br>
- Once downloaded, rename it by prefixing with 'jscript_' so if the file you have downloaded is 'jquery-1.4.0.min.js', you would rename it to 'jscript_jquery-1.4.0.min.js'.<br>
+ Some functions of Dynamic Filter require the jQuery library to be available (see configuration section for details on which features require jQuery). As of Zen Cart 1.5.4 jQuery is available by default. If your store does not already have jQuery available you can download it <a href="http://www.jquery.com/" target="_blank">here</a>.<br>
+ Once downloaded, rename it by prefixing with 'jscript_' so if the file you have downloaded is 'jquery-1.11.3.min.js', you would rename it to 'jscript_jquery-1.11.3.min.js'.<br>
  Now upload to includes/templates/YOUR_TEMPLATE/jscript in your store.
  <br />
  <p><a href="#top">Back to top</a><hr style="text-align:center; width:75%"></p>
 
-<h4><a name="uninstall" id="uninstall"></a><u>Uninstall instructions for all Zen Cart versions </u></h4>
+<h4><a name="uninstall" id="uninstall"></a><u>Uninstall instructions</u></h4>
 <p>There is no need to remove the Dynamic Filter module, as it can be completely disabled in admin (see Configuration).<br>
-  If you do wish to remove the module, simply delete all the New Files loaded in step 1, delete (or replace with your original if the file was already present) Template Override Files loaded in step 2, then replace all the Modified Core Files loaded in step 3 with your original files.</p>
+  If you do wish to remove the module, simply delete (or replace with your original if the file was already present) Template Override Files loaded in step 1, then replace all the Modified Core Files loaded in step 2 with your original files.</p>
 <p>Finally, run 'uninstall.sql' to remove the configuration switch.</p>
 <p><a href="#top">Back to top</a></p>
 
@@ -387,6 +367,27 @@ To switch the standard Zen Cart filter off, go to Admin -&gt; Configuration -&gt
 <div class="textcontent">
 <h3>CREDITS &amp; HISTORY</h3>
 <br>
+<strong>v1.4</strong> by Design75
+<br>
+<ul style="margin-top:0">
+  <li></li>
+</ul>
+Files changed:
+<ul style="margin-top:0">
+  <li></li>
+</ul>
+<br>
+<strong>v1.3</strong> by Design75
+<br>
+<ul style="margin-top:0">
+  <li>This is an intermediate version. This version is specific for Zen Cart 1.5.4</li>
+  <li>Support for earlier Zen Cart versions has been dropped.</li>
+</ul>
+Files changed:
+<ul style="margin-top:0">
+  <li>removed includes/functions/functions_general.php</li>
+</ul>
+<br>
 <strong>v1.2</strong> by Design75
 <br>
 <ul style="margin-top:0">
@@ -433,15 +434,9 @@ Tested with:
 <div class="tabcontent" id="sc6" style="display: block;">
 <div class="textcontent">
 <h3>LICENSE</h3>
-<p>This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.</p>
+<p>This program is released under the General Public License (see LICENSE.txt)
+<br><br>
+This script is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</p>
 
 <p><strong>Always backup your shop and database before making changes.</strong></p>
 </div>
