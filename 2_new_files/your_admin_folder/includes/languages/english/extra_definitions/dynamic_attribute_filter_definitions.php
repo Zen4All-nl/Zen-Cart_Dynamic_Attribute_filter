@@ -8,5 +8,5 @@
  */
 
 // Dynamic Filter Filename Defines
-  define('BOX_CONFIGURATION_DYNAMIC_FILTER', 'Dynamic Filter');
+  define('BOX_CONFIGURATION_DYNAMIC_FILTER', 'Dynamic Attribute Filter');
 ?>
