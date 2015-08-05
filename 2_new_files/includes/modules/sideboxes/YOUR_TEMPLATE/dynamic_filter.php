@@ -8,7 +8,15 @@
  *
  */
 
-if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_page && ($category_depth == 'products' || $category_depth == 'top') || (FILTER_ALL == 'Yes' && $current_page_base == 'products_all') || (FILTER_NEW == 'Yes' && $current_page_base == 'products_new') || (FILTER_FEATURED == 'Yes' && $current_page_base == 'featured_products') || (FILTER_SPECIALS == 'Yes' && $current_page_base == 'specials') || (FILTER_SEARCH == 'Yes' && $current_page_base == 'advanced_search_result')) {
+if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
+                             && !$this_is_home_page
+                             && ($category_depth == 'products'
+                             || $category_depth == 'top')
+   || (FILTER_ALL == 'Yes' && $current_page_base == 'products_all')
+   || (FILTER_NEW == 'Yes' && $current_page_base == 'products_new')
+   || (FILTER_FEATURED == 'Yes' && $current_page_base == 'featured_products')
+   || (FILTER_SPECIALS == 'Yes' && $current_page_base == 'specials')
+   || (FILTER_SEARCH == 'Yes' && $current_page_base == 'advanced_search_result')) {
 
 //if (defined('CEON_URI_MAPPING_ENABLED') && CEON_URI_MAPPING_ENABLED == 1) $pageName = preg_replace('{^.*/([^\?]+)\??.*$}', '$1', $_SERVER['REQUEST_URI']);
   $pageName = substr(strrchr($breadcrumb->trail('/'), "/"), 1);
@@ -97,7 +105,6 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_
   if (PRODUCT_LIST_FILTER == 0) {
     if (isset($_GET['manufacturers_id']) && $_GET['manufacturers_id'] != '' || $current_page_base == 'products_all' || $current_page_base == 'products_new' || $current_page_base == 'specials' || $current_page_base == 'featured_products' || $current_page_base == 'advanced_search_result') {
       if (count($unfilteredCategories) > 0) {
-        $group = DYNAMIC_FILTER_PREFIX . str_replace(' ', '', DYNAMIC_FILTER_CATEGORY_GROUP);
         $resetParms[] = $group;
         $parameters = zen_get_all_get_params();
         $dropdownDefault = str_replace('%n', DYNAMIC_FILTER_CATEGORY_GROUP, DYNAMIC_FILTER_DROPDOWN_DEFAULT);
@@ -116,7 +123,6 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_
   }
   if (!isset($_GET['manufacturers_id'])) {
     if (count($unfilteredManufacturers) > 0) {
-      $group = DYNAMIC_FILTER_PREFIX . str_replace(' ', '', DYNAMIC_FILTER_MANUFACTURER_GROUP);
       $resetParms[] = $group;
       $parameters = zen_get_all_get_params(array($group));
       $dropdownDefault = str_replace('%n', DYNAMIC_FILTER_MANUFACTURER_GROUP, DYNAMIC_FILTER_DROPDOWN_DEFAULT);
@@ -124,9 +130,9 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_
 // BOF fix by a_berezin
       if (sizeof($filteredManufacturers) > 0) {
         $manufacturers = $db->Execute("SELECT manufacturers_id, manufacturers_name,
-                                       IF(manufacturers_id IN(" . implode(',', $filteredManufacturers) . "), 'Y', 'N') as flag" . "
+                                       IF(manufacturers_id IN(" . implode(',', $filteredManufacturers) . "), 'Y', 'N') AS flag
                                        FROM " . TABLE_MANUFACTURERS . "
-                                       WHERE manufacturers_id IN (" . implode(',', $unfilteredManufacturers) . ")" . "
+                                       WHERE manufacturers_id IN (" . implode(',', $unfilteredManufacturers) . ")
                                        ORDER BY manufacturers_name");
       } else {
         $manufacturers = $db->Execute("SELECT manufacturers_id, manufacturers_name, 'N' AS flag
@@ -135,71 +141,6 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_
                                        ORDER BY manufacturers_name");
       }
 // EOF fix
-    }
-  }
-  if (SHOW_FILTER_BY_PRICE == 'Yes') {
-    if (count($priceArray) > 0) {
-      $priceGap = floor(($max - $min) / (FILTER_MAX_RANGES - 1));
-      if (FILTER_MIN_PRICE > 0 && $priceGap < FILTER_MIN_PRICE) {
-        $priceGap = FILTER_MIN_PRICE;
-      }
-      if (FILTER_MAX_PRICE > 0 && $priceGap > FILTER_MAX_PRICE) {
-        $priceGap = FILTER_MAX_PRICE;
-      }
-
-      $group = DYNAMIC_FILTER_PREFIX . str_replace(' ', '', DYNAMIC_FILTER_PRICE_GROUP);
-      $resetParms[] = $group;
-      $parameters = zen_get_all_get_params();
-      $dropdownDefault = str_replace('%n', DYNAMIC_FILTER_PRICE_GROUP, DYNAMIC_FILTER_DROPDOWN_DEFAULT);
-      $priceCount = 0;
-      $prices = '';
-
-      for ($start = $min - 0.5; $start < $max; $start = $end + 0.01) {
-        $end = round($start + $priceGap);
-        if ($end < $max) {
-// BOF tax fix by design75
-          $text = $currency_symbol . round(zen_add_tax($start, $products_tax) * $conversion_rate) . TEXT_DYNAMIC_FILTER_DIVIDER . $currency_symbol . round(zen_add_tax($end, $products_tax) * $conversion_rate);
-        } else {
-          $text = $currency_symbol . round(zen_add_tax($start, $products_tax) * $conversion_rate) . TEXT_DYNAMIC_FILTER_AND_OVER;
-// EOF tax fix
-        }
-        foreach ($priceArray as $price) {
-          if ($start <= $price && $end >= $price) {
-            if (isset($_GET[$group]) && in_array($start . '--' . $end, $_GET[$group])) {
-              $linkClass = 'selected';
-            } else {
-              $linkClass = 'enabled';
-            }
-            break;
-          } else {
-            $linkClass = 'disabled';
-          }
-        }
-
-        $onClick = '';
-        if (FILTER_GOOGLE_TRACKING != 'No') {
-          $onClick .= $trackingStart . '"filterAction", "' . ($linkClass != 'selected' ? 'addFilter' : 'removeFilter') . '", "' . $pageName . ';' . DYNAMIC_FILTER_PRICE_GROUP . '=' . $start . '-' . $end . '"' . $trackingEnd;
-        }
-        if (FILTER_STYLE == 'Checkbox - Single') {
-          $onClick .= ' this.form.submit();';
-        }
-
-        if (FILTER_METHOD != 'Hidden' || $linkClass != 'disabled') {
-          $hrefLink = $group . '[]=' . $start . '--' . $end;
-          switch (strtok(FILTER_STYLE, " ")) {
-            case 'Checkbox':
-              $prices .= '<li class="dFilterLink">' . zen_draw_checkbox_field($group . '[]', $start . '--' . $end, (isset($_GET[$group]) && in_array($start . '--' . $end, $_GET[$group]) ? true : false), ($linkClass == 'disabled' ? 'disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Checkbox - Single' ? ' onclick="' . $onClick . '"' : '')) . $text . '</li>';
-              break;
-            case 'Link':
-              $prices .= '<li class="dFilterLink"><a class="' . $linkClass . '"' . ($linkClass != 'disabled' ? ' rel="nofollow" href="' . zen_href_link($_GET['main_page'], ($linkClass != 'selected' ? $parameters . $hrefLink : str_replace(array($hrefLink, '&' . $hrefLink), array("", ""), $parameters)), 'NONSSL') . '"' . ($onClick != '' ? ' onclick="' . $onClick . '"' : '') : '') . ' >' . $text . '</a></li>';
-              break;
-            case 'Dropdown':
-              $prices .= '<option value="' . $start . '--' . $end . '"' . ($linkClass == 'selected' ? ' selected="selected"' : '') . ($linkClass == 'disabled' ? ' disabled="disabled"' : '') . ($onClick != '' && FILTER_STYLE == 'Dropdown - Single' ? ' onclick="' . $onClick . '"' : '') . ' >' . $text . '</option>';
-              break;
-          }
-        }
-        ++$priceCount;
-      }
     }
   }
   if (count($filteredProducts) > 0) {
@@ -237,7 +178,7 @@ if(FILTER_OPTIONS_LEFT == 'Yes'){
   if (isset($attributes) && ($attributes->RecordCount() > 0)) {
     $title_link = false;
     require($template->get_template_dir('tpl_dynamic_filter.php', DIR_WS_TEMPLATE, $current_page_base, 'sideboxes') . '/tpl_dynamic_filter.php');
-    $title = BOX_HEADING_FILTER;
+    $title = BOX_HEADING_DYNAMIC_FILTER;
     require($template->get_template_dir($column_box_default, DIR_WS_TEMPLATE, $current_page_base, 'common') . '/' . $column_box_default);
   }
 }
