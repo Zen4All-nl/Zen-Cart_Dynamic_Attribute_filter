@@ -19,37 +19,37 @@ foreach($_GET as $key => $value) {
       if ($key == $manufacturerGroup || $key == $categoryGroup || $key == $priceGroup) {
         if ($key != $prvKey) {
           if ($prvKey != '') {
-            $filter .= ') and (';
+            $filter .= ') AND (';
           } else {
-            $filter .= ' and (';
+            $filter .= ' AND (';
           }
         } else {
-          $filter .= ' or ';
+          $filter .= ' OR ';
         }
       }
       // manufacturer
       if ($key == $manufacturerGroup) {
-        $filter .= "m.manufacturers_id = '" . (int)$value . "'";
+        $filter .= 'm.manufacturers_id = ' . (int)$value;
         $prvKey = $key;
         // category
       } else if ($key == $categoryGroup) {
-        $filter .= "p2c.categories_id = '" . (int)$value . "'";
+        $filter .= 'p2c.categories_id = ' . (int)$value;
         $prvKey = $key;
         // price range
       } else if ($key == $priceGroup) {
         list($low, $high) = explode("--", $value);
-        $filter .= 'p.products_price_sorter>=' . $low . ' and ' . 'p.products_price_sorter<=' . $high; // @todo Add tax when needed
+        $filter .= 'p.products_price_sorter >= ' . $low . ' AND ' . 'p.products_price_sorter <= ' . $high; // @todo Add tax when needed
         $prvKey = $key;
         // attributes
       } else {
         if ($key != $prvHaving) {
           if ($prvHaving != '') {
-            $having .= ') and (';
+            $having .= ') AND (';
           } else {
             $having .= 'HAVING (';
           }
         } else {
-          $having .= ' or ';
+          $having .= ' OR ';
         }
 
 // BOF fix to escape special characters in query by kevin_205 & design75
