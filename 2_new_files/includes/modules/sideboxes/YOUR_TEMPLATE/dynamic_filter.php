@@ -5,7 +5,7 @@
  *
  * Zen Cart dynamic filter module
  * Damian Taylor, March 2010
- *
+ * updated in v1.4 by Zen4All
  */
 
 if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
@@ -58,26 +58,29 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
 // retrieve filtered and unfiltered product options
   $min = 0;
   $max = 0;
-  while (!$unfiltered->EOF) {
-    if ($min == 0 or round($unfiltered->fields['products_price_sorter'], 2) < $min) {
-      $min = round($unfiltered->fields['products_price_sorter'], 2);
+  $unfilteredProducts = array();
+  $unfilteredManufacturers = array();
+  $unfilteredCategories = array();
+  foreach ($unfiltered as $unfilteredItem) {
+    if ($min == 0 || round($unfilteredItem['products_price_sorter'], 2) < $min) {
+      $min = round($unfilteredItem['products_price_sorter'], 2);
     }
-    if (round($unfiltered->fields['products_price_sorter'], 2) > $max) {
-      $max = round($unfiltered->fields['products_price_sorter'], 2);
+    if (round($unfilteredItem['products_price_sorter'], 2) > $max) {
+      $max = round($unfilteredItem['products_price_sorter'], 2);
     }
-    $unfilteredProducts[] = $unfiltered->fields['products_id'];
-    $unfilteredManufacturers[] = $unfiltered->fields['manufacturers_id'];
-    $unfilteredCategories[] = $unfiltered->fields['master_categories_id'];
-
-    $unfiltered->MoveNext();
+    $unfilteredProducts[] = $unfilteredItem['products_id'];
+    $unfilteredManufacturers[] = $unfilteredItem['manufacturers_id'];
+    $unfilteredCategories[] = $unfilteredItem['master_categories_id'];
   }
-  while (!$filtered->EOF) {
-    $priceArray[] = round($filtered->fields['products_price_sorter'], 2);
-    $filteredProducts[] = $filtered->fields['products_id'];
-    $filteredManufacturers[] = $filtered->fields['manufacturers_id'];
-    $filteredCategories[] = $filtered->fields['master_categories_id'];
-
-    $filtered->MoveNext();
+  $priceArray = array();
+  $filteredProducts = array();
+  $filteredManufacturers = array();
+  $filteredCategories = array();
+  foreach ($filtered as $filteredItem) {
+    $priceArray[] = round($filteredItem['products_price_sorter'], 2);
+    $filteredProducts[] = $filteredItem['products_id'];
+    $filteredManufacturers[] = $filteredItem['manufacturers_id'];
+    $filteredCategories[] = $filteredItem['master_categories_id'];
   }
 
   if (count($unfilteredManufacturers) > 1) {
