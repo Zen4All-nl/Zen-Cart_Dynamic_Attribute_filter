@@ -114,7 +114,7 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
                                     IF(cd.categories_id IN (" . implode(',', $filteredCategories) . "), 'Y', 'N') AS flag
                                     FROM " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd
                                     WHERE cd.categories_id IN (" . implode(',', $unfilteredCategories) . ")" . "
-                                    AND cd.language_id=" . (int)$_SESSION['languages_id'] . "
+                                    AND cd.language_id = " . (int)$_SESSION['languages_id'] . "
                                     AND c.categories_id = cd.categories_id
                                     ORDER BY c.sort_order, cd.categories_name");
 // EOF language fix
@@ -151,9 +151,9 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
                                 SUM(IF(p2a.products_id IN(" . implode(',', $filteredProducts) . "), 1, 0)) AS flag
                                 FROM " . TABLE_PRODUCTS_ATTRIBUTES . " p2a
                                 JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
-                                AND po.language_id=" . (int)$_SESSION['languages_id'] . "
+                                AND po.language_id = " . (int)$_SESSION['languages_id'] . "
                                 JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id
-                                AND pov.language_id=" . (int)$_SESSION['languages_id'] .
+                                AND pov.language_id = " . (int)$_SESSION['languages_id'] .
                                 (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
                                   JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p2a.products_id = p2as.products_id
                                   AND p2as.stock_attributes LIKE CONCAT('%', p2a.products_attributes_id, '%')" : "") . "
@@ -162,8 +162,8 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
                                 (FILTER_OPTIONS_EXCLUDE != '' ? " AND p2a.options_id NOT IN (" . FILTER_OPTIONS_EXCLUDE . ")" : '') .
                                 (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
                                   AND p2as.quantity > 0" : "") . "
-                                AND po.products_options_type != '1'
-                                AND po.products_options_type != '4'
+                                AND po.products_options_type != 1
+                                AND po.products_options_type != 4
                                 GROUP BY po.products_options_name, pov.products_options_values_name
                                 ORDER BY po.products_options_name, pov.products_options_values_sort_order");
 // EOF language fix
