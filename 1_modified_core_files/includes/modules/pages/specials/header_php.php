@@ -16,7 +16,7 @@ $breadcrumb->add(NAVBAR_TITLE);
 if (MAX_DISPLAY_SPECIAL_PRODUCTS > 0 ) {
   include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
 
-  $listing_sql = "SELECT DISTINCT p.products_id, p.products_image, pd.products_name, p.master_categories_id, p.manufacturers_id
+  $listispecials_query_rawng_sql = "SELECT DISTINCT p.products_id, p.products_image, pd.products_name, p.master_categories_id, p.manufacturers_id
                   FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_SPECIALS . " s ON p.products_id = s.products_id
                   LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON p.products_id = pd.products_id
                   LEFT JOIN " . TABLE_MANUFACTURERS . " m ON p.manufacturers_id = m.manufacturers_id
@@ -33,7 +33,7 @@ if (MAX_DISPLAY_SPECIAL_PRODUCTS > 0 ) {
                   $having . "
                   ORDER BY s.specials_date_added DESC";
 
-  $listing_sql = $db->bindVars($listing_sql, ':languagesID', $_SESSION['languages_id'], 'integer');
+  $listing_sql = $db->bindVars($specials_query_raw, ':languagesID', $_SESSION['languages_id'], 'integer');
   $specials_split = new splitPageResults($listing_sql, MAX_DISPLAY_SPECIAL_PRODUCTS);
 }
 // eof dynamic filter 1 of 1 

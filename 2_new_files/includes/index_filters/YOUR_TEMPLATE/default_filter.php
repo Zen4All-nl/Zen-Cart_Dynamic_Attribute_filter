@@ -43,19 +43,19 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                     LEFT JOIN " . TABLE_SPECIALS . " s ON p.products_id = s.products_id
                     LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON p.products_id = pd.products_id
                     LEFT JOIN " . TABLE_MANUFACTURERS . " m ON p.manufacturers_id = m.manufacturers_id
-                    JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ON p.products_id = p2c.products_id" .
-                   ($filter_attr == true ? "
-                     JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a ON p.products_id = p2a.products_id
-                     JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
-                     JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id" .
-                     (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
-                       JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id " : "") : '') . "
+                    JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c ON p.products_id = p2c.products_id
+                    " . ($filter_attr == true ? "
+                      JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a ON p.products_id = p2a.products_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
+                      JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id
+                      " . (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
+                        JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id " : "") : '') . "
                     WHERE p.products_status = 1
-                    AND m.manufacturers_id = '" . (int)$_GET['manufacturers_id'] . "'
-                    AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'" .
+                    AND m.manufacturers_id = " . (int)$_GET['manufacturers_id'] . "
+                    AND pd.language_id = " . (int)$_SESSION['languages_id'] .
                     $filter . "
-                    GROUP BY p.products_id " .
-                    $having .
+                    GROUP BY p.products_id
+                    " . $having .
                     $alpha_sort;
   } else {
 // We show them all
@@ -73,8 +73,8 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                     (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
                       JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id " : "") : '') . "
                     WHERE p.products_status = 1
-                    AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
-                    AND m.manufacturers_id = '" . (int)$_GET['manufacturers_id'] . "'" .
+                    AND pd.language_id = " . (int)$_SESSION['languages_id'] . "
+                    AND m.manufacturers_id = " . (int)$_GET['manufacturers_id'] .
                     $filter . "
                     GROUP BY p.products_id " .
                     $having .
@@ -99,8 +99,8 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                       (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
                         JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '') . "
                     WHERE p.products_status = 1
-                    AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
-                    AND p2c.categories_id = '" . (int)$current_category_id . "'" .
+                    AND pd.language_id = " . (int)$_SESSION['languages_id'] . "
+                    AND p2c.categories_id = " . (int)$current_category_id .
                     $filter . "
                     GROUP BY p.products_id " .
                     $having .
@@ -121,8 +121,8 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                       (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
                         JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '') . "
                     WHERE p.products_status = 1
-                    AND pd.language_id = '" . (int)$_SESSION['languages_id'] . "'
-                    AND p2c.categories_id = '" . (int)$current_category_id . "'" .
+                    AND pd.language_id = " . (int)$_SESSION['languages_id'] . "
+                    AND p2c.categories_id = " . (int)$current_category_id .
                     $filter . "
                     GROUP BY p.products_id " .
                     $having .

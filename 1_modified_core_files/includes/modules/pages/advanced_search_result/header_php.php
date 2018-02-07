@@ -3,10 +3,10 @@
  * Header code file for the Advanced Search Results page
  *
  * @package page
- * @copyright Copyright 2003-2011 Zen Cart Development Team
+ * @copyright Copyright 2003-2016 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: header_php.php 19702 2011-10-05 20:33:06Z wilt $
+ * @version $Id: Author: DrByte  Mon Feb 8 15:28:43 2016 -0500 Modified in v1.5.5 $
  */
 
 // This should be first line of the script:
@@ -16,9 +16,9 @@ if (!defined('KEYWORD_FORMAT_STRING')) define('KEYWORD_FORMAT_STRING','keywords'
 
 require(DIR_WS_MODULES . zen_get_module_directory('require_languages.php'));
 
-// bof dynamic filter 1 of 4
+// bof dynamic filter 1 of 3
 include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
-// eof dynamic filter 1 of 4
+// eof dynamic filter 1 of 3
 
 $error = false;
 $missing_one_input = false;
@@ -39,6 +39,8 @@ if ( (isset($_GET['keyword']) && (empty($_GET['keyword']) || $_GET['keyword']==H
   $pfrom = '';
   $pto = '';
   $keywords = '';
+  $dfrom_array = array();
+  $dto_array = array();
 
   if (isset($_GET['dfrom'])) {
     $dfrom = (($_GET['dfrom'] == DOB_FORMAT_STRING) ? '' : $_GET['dfrom']);
@@ -208,7 +210,7 @@ $zco_notifier->notify('NOTIFY_SEARCH_COLUMNLIST_STRING');
 
 //  $select_str = "select distinct " . $select_column_list . " m.manufacturers_id, p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, IF(s.status = 1, s.specials_new_products_price, NULL) as specials_new_products_price, IF(s.status = 1, s.specials_new_products_price, p.products_price) as final_price ";
 $select_str = "SELECT DISTINCT " . $select_column_list .
-              " m.manufacturers_id, p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_price_sorter, p.products_qty_box_status, p.master_categories_id ";
+              " p.products_sort_order, m.manufacturers_id, p.products_id, pd.products_name, p.products_price, p.products_tax_class_id, p.products_price_sorter, p.products_qty_box_status, p.master_categories_id ";
 
 if ((DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && zen_not_null($_GET['pfrom'])) || (isset($_GET['pto']) && zen_not_null($_GET['pto'])))) {
   $select_str .= ", SUM(tr.tax_rate) AS tax_rate ";
@@ -220,19 +222,21 @@ $zco_notifier->notify('NOTIFY_SEARCH_SELECT_STRING');
 
 //  $from_str = "from " . TABLE_PRODUCTS . " p left join " . TABLE_MANUFACTURERS . " m using(manufacturers_id), " . TABLE_PRODUCTS_DESCRIPTION . " pd left join " . TABLE_SPECIALS . " s on p.products_id = s.products_id, " . TABLE_CATEGORIES . " c, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c";
 
-// bof dynamic filter 2 of 4
-$from_str = "FROM " . TABLE_PRODUCTS . " p
-             LEFT JOIN " . TABLE_MANUFACTURERS . " m USING(manufacturers_id)
-             LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id
-             JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c on p.products_id = p2c.products_id
-             JOIN " . TABLE_CATEGORIES . " c on p2c.categories_id = c.categories_id
+// bof dynamic filter 2 of 3
+$from_str = "FROM (" . TABLE_PRODUCTS . " p
+             LEFT JOIN " . TABLE_MANUFACTURERS . " m USING(manufacturers_id),
+                       " . TABLE_PRODUCTS_DESCRIPTION . " pd,
+                       " . TABLE_CATEGORIES . " c,
+                       " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c)
              LEFT JOIN " . TABLE_META_TAGS_PRODUCTS_DESCRIPTION . " mtpd ON mtpd.products_id= p2c.products_id
-             AND mtpd.language_id = :languagesID" .
-             ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a on p.products_id = p2a.products_id
-             JOIN " . TABLE_PRODUCTS_OPTIONS . " po on p2a.options_id = po.products_options_id
-             JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov on p2a.options_values_id = pov.products_options_values_id" .
-             (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? " JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as on p.products_id = p2as.products_id " : "") : '');
-// eof dynamic filter 2 of 4
+             AND mtpd.language_id = :languagesID
+             " . ($filter_attr == true ? " JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " p2a ON p.products_id = p2a.products_id
+             JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
+             JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id" .
+             (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
+               JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p.products_id = p2as.products_id
+             " : "") : '');
+// eof dynamic filter 2 of 3
 
 $from_str = $db->bindVars($from_str, ':languagesID', $_SESSION['languages_id'], 'integer');
 
@@ -255,10 +259,11 @@ if ((DISPLAY_PRICE_WITH_TAX == 'true') && ((isset($_GET['pfrom']) && zen_not_nul
 // Notifier Point
 $zco_notifier->notify('NOTIFY_SEARCH_FROM_STRING');
 
-// bof dynamic filter 3 of 4
 $where_str = " WHERE (p.products_status = 1
-               AND pd.language_id = :languagesID ";
-// bof dynamic filter 3 of 4
+               AND p.products_id = pd.products_id
+               AND pd.language_id = :languagesID
+               AND p.products_id = p2c.products_id
+               AND p2c.categories_id = c.categories_id ";
 
 $where_str = $db->bindVars($where_str, ':languagesID', $_SESSION['languages_id'], 'integer');
 
@@ -434,7 +439,7 @@ if ((!isset($_GET['sort'])) || (!preg_match('/[1-8][ad]/', $_GET['sort'])) || (s
   }
 } else {
   $sort_col = substr($_GET['sort'], 0 , 1);
-  $sort_order = substr($_GET['sort'], 1);
+  $sort_order = substr($_GET['sort'], -1);
   $order_str = ' order by ';
   switch ($column_list[$sort_col-1]) {
     case 'PRODUCT_LIST_MODEL':
@@ -462,17 +467,22 @@ if ((!isset($_GET['sort'])) || (!preg_match('/[1-8][ad]/', $_GET['sort'])) || (s
   }
 }
 //$_GET['keyword'] = zen_output_string_protected($_GET['keyword']);
-// bof dynamic filter 4 of 4
-$listing_sql = $select_str . $from_str . $where_str . 
-         $filter . " GROUP BY p.products_id " . $having .
-         $order_str;
-// eof dynamic filter 4 of 4
+// bof dynamic filter 3 of 3
+$listing_sql = $select_str .
+               $from_str .
+               $where_str .
+               $filter .
+               " GROUP BY p.products_id " .
+               $having .
+               $order_str;
+// eof dynamic filter 3 of 3
 
 // Notifier Point
 $zco_notifier->notify('NOTIFY_SEARCH_ORDERBY_STRING', $listing_sql);
+
 $breadcrumb->add(NAVBAR_TITLE_1, zen_href_link(FILENAME_ADVANCED_SEARCH));
 $breadcrumb->add(NAVBAR_TITLE_2);
-
+$breadcrumb->add(zen_output_string_protected($keywords));
 
 $result = new splitPageResults($listing_sql, MAX_DISPLAY_PRODUCTS_LISTING, 'p.products_id', 'page');
 if ($result->number_of_rows == 0) {
