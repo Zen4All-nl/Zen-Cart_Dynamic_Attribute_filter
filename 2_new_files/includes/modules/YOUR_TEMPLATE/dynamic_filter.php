@@ -11,7 +11,7 @@ $having = '';
 $filter_attr = false;
 
 reset($_GET);
-while (list($key, $value) = each($_GET)) {
+foreach($_GET as $key => $value) {
   if (substr($key, 0, strlen(DYNAMIC_FILTER_PREFIX)) == DYNAMIC_FILTER_PREFIX && array_filter($value)) {
     $key = str_replace(DYNAMIC_FILTER_PREFIX, '', $key);
     foreach ($value as $value) {
