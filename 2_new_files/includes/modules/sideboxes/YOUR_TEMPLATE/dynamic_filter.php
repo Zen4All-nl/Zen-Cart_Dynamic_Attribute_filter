@@ -48,12 +48,15 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
   }
 
 // list filtered and unfiltered products for category
-  $unfiltered = $db->Execute(str_replace(array($filter, $having), array("", ""), "SELECT p.products_id, p.products_price_sorter, p.master_categories_id, p.manufacturers_id" . substr($listing_sql, $pos_from, ($pos_where - $pos_from)) . substr($listing_sql, $pos_where, ($pos_group - $pos_where))));
+  $unfilteredQuery = str_replace(array($filter, $having), array("", ""), "SELECT p.products_id, p.products_price_sorter, p.master_categories_id, p.manufacturers_id" . substr($listing_sql, $pos_from, ($pos_where - $pos_from)) . substr($listing_sql, $pos_where, ($pos_group - $pos_where)));
+  $unfiltered = $db->Execute($unfilteredQuery);
 
-  $filtered = $db->Execute("SELECT p.products_id, p.products_price_sorter, p.master_categories_id, p.manufacturers_id" . substr($listing_sql, $pos_from, ($pos_where - $pos_from)) . substr($listing_sql, $pos_where, ($pos_to - $pos_where)));
+  $filteredQuery = "SELECT p.products_id, p.products_price_sorter, p.master_categories_id, p.manufacturers_id" . substr($listing_sql, $pos_from, ($pos_where - $pos_from)) . substr($listing_sql, $pos_where, ($pos_to - $pos_where));
+  $filtered = $db->Execute($filteredQuery);
 
   if ($filtered->RecordCount() == 0) {
-    $filtered = $db->Execute(str_replace(array($filter, $having), array("", ""), "SELECT p.products_id, p.products_price_sorter, p.master_categories_id, p.manufacturers_id" . substr($listing_sql, $pos_from, ($pos_where - $pos_from)) . substr($listing_sql, $pos_where, ($pos_group - $pos_where))));
+    $filteredQuery = str_replace(array($filter, $having), array("", ""), "SELECT p.products_id, p.products_price_sorter, p.master_categories_id, p.manufacturers_id" . substr($listing_sql, $pos_from, ($pos_where - $pos_from)) . substr($listing_sql, $pos_where, ($pos_group - $pos_where)));
+    $filtered = $db->Execute($filteredQuery);
   }
 // retrieve filtered and unfiltered product options
   $min = 0;
@@ -113,13 +116,14 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
         $dropdownDefault = str_replace('%n', DYNAMIC_FILTER_CATEGORY_GROUP, DYNAMIC_FILTER_DROPDOWN_DEFAULT);
 
 // BOF language fix by a_berezin
-        $categories = $db->Execute("SELECT cd.categories_id, cd.categories_name,
-                                    IF(cd.categories_id IN (" . implode(',', $filteredCategories) . "), 'Y', 'N') AS flag
-                                    FROM " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd
-                                    WHERE cd.categories_id IN (" . implode(',', $unfilteredCategories) . ")" . "
-                                    AND cd.language_id = " . (int)$_SESSION['languages_id'] . "
-                                    AND c.categories_id = cd.categories_id
-                                    ORDER BY c.sort_order, cd.categories_name");
+        $categoriesQuery = "SELECT cd.categories_id, cd.categories_name,
+                            IF(cd.categories_id IN (" . implode(',', $filteredCategories) . "), 'Y', 'N') AS flag
+                            FROM " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd
+                            WHERE cd.categories_id IN (" . implode(',', $unfilteredCategories) . ")" . "
+                            AND cd.language_id = " . (int)$_SESSION['languages_id'] . "
+                            AND c.categories_id = cd.categories_id
+                            ORDER BY c.sort_order, cd.categories_name";
+        $categories = $db->Execute($categoriesQuery);
 // EOF language fix
       }
     }
@@ -150,31 +154,29 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
     // Below line counts up all quantities of each item. e.g. if a glove is available in Small and Medium, quantity = 2.
     //$attributes = $db->Execute("SELECT po.products_options_name, pov.products_options_values_name, count( p2as.quantity ) as quantity" .
 // BOF language fix by a_berezin
-    $attributes = $db->Execute("SELECT count(DISTINCT p2a.products_id) AS quantity, po.products_options_name, pov.products_options_values_name,
-                                SUM(IF(p2a.products_id IN(" . implode(',', $filteredProducts) . "), 1, 0)) AS flag
-                                FROM " . TABLE_PRODUCTS_ATTRIBUTES . " p2a
-                                JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
-                                AND po.language_id = " . (int)$_SESSION['languages_id'] . "
-                                JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id
-                                AND pov.language_id = " . (int)$_SESSION['languages_id'] .
-                                (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
-                                  JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p2a.products_id = p2as.products_id
-                                  AND p2as.stock_attributes LIKE CONCAT('%', p2a.products_attributes_id, '%')" : "") . "
-                                WHERE p2a.products_id IN (" . implode(',', $unfilteredProducts) . ")" . 
-                                (FILTER_OPTIONS_INCLUDE != '' ? " AND p2a.options_id IN (" . FILTER_OPTIONS_INCLUDE . ")" : '') .
-                                (FILTER_OPTIONS_EXCLUDE != '' ? " AND p2a.options_id NOT IN (" . FILTER_OPTIONS_EXCLUDE . ")" : '') .
-                                (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
-                                  AND p2as.quantity > 0" : "") . "
-                                AND po.products_options_type != 1
-                                AND po.products_options_type != 4
-                                GROUP BY po.products_options_name, pov.products_options_values_name
-                                ORDER BY po.products_options_name, pov.products_options_values_sort_order");
+    $attributesQuery = "SELECT COUNT(DISTINCT p2a.products_id) AS quantity, po.products_options_name, pov.products_options_values_name,
+                        SUM(IF(p2a.products_id IN('" . implode("','", $filteredProducts) . "'), 1, 0)) AS flag
+                        FROM " . TABLE_PRODUCTS_ATTRIBUTES . " p2a
+                        JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
+                          AND po.language_id = " . (int)$_SESSION['languages_id'] . "
+                        JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id
+                          AND pov.language_id = " . (int)$_SESSION['languages_id'] .
+                        (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
+                          JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p2a.products_id = p2as.products_id
+                            AND p2as.stock_attributes LIKE CONCAT('%', p2a.products_attributes_id, '%')" : "") . "
+                        WHERE p2a.products_id IN ('" . implode("','", $unfilteredProducts) . "')" .
+                        (FILTER_OPTIONS_INCLUDE != '' ? " AND p2a.options_id IN (" . FILTER_OPTIONS_INCLUDE . ")" : '') .
+                        (FILTER_OPTIONS_EXCLUDE != '' ? " AND p2a.options_id NOT IN (" . FILTER_OPTIONS_EXCLUDE . ")" : '') .
+                        (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
+                          AND p2as.quantity > 0" : "") . "
+                        AND po.products_options_type != 1
+                        AND po.products_options_type != 4
+                        GROUP BY po.products_options_name, pov.products_options_values_name, pov.products_options_values_sort_order
+                        ORDER BY po.products_options_name, pov.products_options_values_sort_order";
+    //var_dump($attributesQuery);
+    $attributes = $db->Execute($attributesQuery);
 // EOF language fix
-if(FILTER_OPTIONS_LEFT == 'Yes'){
-  $numberOfProductsLeft = '&nbsp;<span class="numberOfProductsLeft">(' . htmlspecialchars(html_entity_decode($attributes->fields['flag'], ENT_QUOTES)) . ')</span>';
-} else {
-  $numberOfProductsLeft = '';
-}
+
     $savName = '';
     $savValue = '';
   }
