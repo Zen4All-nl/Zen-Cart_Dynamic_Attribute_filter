@@ -44,4 +44,3 @@ if (($this_is_home_page == false && FILTER_CATEGORY == 'Yes' && FILTER_OPTIONS_S
   </script>
   <?php
 }
-?>
