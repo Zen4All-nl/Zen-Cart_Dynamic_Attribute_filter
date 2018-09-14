@@ -173,13 +173,10 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
                         AND po.products_options_type != 4
                         GROUP BY po.products_options_name, pov.products_options_values_name, pov.products_options_values_sort_order
                         ORDER BY po.products_options_name, pov.products_options_values_sort_order";
+
     $attributes = $db->Execute($attributesQuery);
 // EOF language fix
-if(FILTER_OPTIONS_LEFT == 'Yes'){
-  $numberOfProductsLeft = '&nbsp;<span class="numberOfProductsLeft">(' . htmlspecialchars(html_entity_decode($attributes->fields['flag'], ENT_QUOTES)) . ')</span>';
-} else {
-  $numberOfProductsLeft = '';
-}
+
     $savName = '';
     $savValue = '';
   }
