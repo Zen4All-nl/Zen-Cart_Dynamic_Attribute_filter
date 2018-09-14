@@ -1,5 +1,4 @@
 <?php
-
 /**
  * default_filter.php  for index filters
  *
@@ -7,11 +6,11 @@
  * show the products of a specified manufacturer
  *
  * @package productTypes
- * @copyright Copyright 2003-2009 Zen Cart Development Team
+ * @copyright Copyright 2003-2016 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @todo Need to add/fine-tune ability to override or insert entry-points on a per-product-type basis
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: default_filter.php 14870 2009-11-19 22:36:24Z drbyte $
+ * @version $Id: Author: DrByte  Mon Oct 19 09:51:56 2015 -0400 Modified in v1.5.5 $
  */
 if (!defined('IS_ADMIN_FLAG')) {
   die('Illegal Access');
@@ -109,7 +108,7 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
 // We show them all
     $listing_sql = "SELECT DISTINCT " . $select_column_list . " p.products_id, p.products_type, p.master_categories_id, p.manufacturers_id, p.products_price, p.products_tax_class_id, pd.products_description,
                     IF(s.status = 1, s.specials_new_products_price, NULL) AS specials_new_products_price,
-                    IF(s.status =1, s.specials_new_products_price, p.products_price) AS final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status
+                    IF(s.status = 1, s.specials_new_products_price, p.products_price) AS final_price, p.products_sort_order, p.product_is_call, p.product_is_always_free_shipping, p.products_qty_box_status
                     FROM " . TABLE_PRODUCTS . " p
                     LEFT JOIN " . TABLE_SPECIALS . " s on p.products_id = s.products_id
                     LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd on p.products_id = pd.products_id
@@ -124,8 +123,8 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                     AND pd.language_id = " . (int)$_SESSION['languages_id'] . "
                     AND p2c.categories_id = " . (int)$current_category_id .
                     $filter . "
-                    GROUP BY p.products_id " .
-                    $having .
+                    GROUP BY p.products_id, s.status, s.specials_new_products_price
+                    " . $having .
                     $alpha_sort;
   }
 }
@@ -157,7 +156,7 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
       }
     } else {
       $sort_col = substr($_GET['sort'], 0 , 1);
-      $sort_order = substr($_GET['sort'], 1);
+      $sort_order = substr($_GET['sort'], -1);
       switch ($column_list[$sort_col-1]) {
         case 'PRODUCT_LIST_MODEL':
           $listing_sql .= " order by p.products_model " . ($sort_order == 'd' ? 'desc' : '') . ", pd.products_name";

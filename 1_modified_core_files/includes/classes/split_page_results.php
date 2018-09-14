@@ -57,13 +57,13 @@ class splitPageResults extends base {
     $query_lower = strtolower($this->countQuery);
     $pos_from = strpos($query_lower, ' from', 0);
 
-// bof dynamic filter 1 of 3
-  //$pos_group_by = strpos($query_lower, ' group by', $pos_from);
-  //if (($pos_group_by < $pos_to) && ($pos_group_by != false)) $pos_to = $pos_group_by;
+/* bof dynamic filter 1 of 3 */
+//    $pos_group_by = strpos($query_lower, ' group by', $pos_from);
+//    if (($pos_group_by < $pos_to) && ($pos_group_by != false)) $pos_to = $pos_group_by;
 
-  //$pos_having = strpos($query_lower, ' having', $pos_from);
-  //if (($pos_having < $pos_to) && ($pos_having != false)) $pos_to = $pos_having;
-// eof dynamic filter 1 of 3
+//    $pos_having = strpos($query_lower, ' having', $pos_from);
+//    if (($pos_having < $pos_to) && ($pos_having != false)) $pos_to = $pos_having;
+/* eof dynamic filter 1 of 3 */
 
     $pos_order_by = strpos($query_lower, ' order by', $pos_from);
     if (($pos_order_by < $pos_to) && ($pos_order_by != false)) $pos_to = $pos_order_by;
@@ -74,19 +74,19 @@ class splitPageResults extends base {
       $count_string = zen_db_input($count_key);
     }
 
-// bof dynamic filter 2 of 3
-  //$count_query = "select count(" . $count_string . ") as total " . substr($this->countQuery, $pos_from, ($pos_to - $pos_from));
+/* bof dynamic filter 2 of 3 */
+//    $count_query = "select count(" . $count_string . ") as total " . substr($this->countQuery, $pos_from, ($pos_to - $pos_from));
     $count_query = "select " . $count_string . substr($this->countQuery, $pos_from, ($pos_to - $pos_from));
-// eof dynamic filter 2 of 3
+/* eof dynamic filter 2 of 3 */
     if ($debug) {
       echo 'count_query=' . $count_query . '<br /><br />';
     }
     $count = $db->Execute($count_query);
 
-// bof dynamic filter 3 of 3
-  //$this->number_of_rows = $count->fields['total'];
+/* bof dynamic filter 3 of 3 */
+//    $this->number_of_rows = $count->fields['total'];
     $this->number_of_rows = $count->RecordCount();
-// eof dynamic filter 3 of 3
+/* eof dynamic filter 3 of 3 */
 
     $this->number_of_pages = ceil($this->number_of_rows / $this->number_of_rows_per_page);
 

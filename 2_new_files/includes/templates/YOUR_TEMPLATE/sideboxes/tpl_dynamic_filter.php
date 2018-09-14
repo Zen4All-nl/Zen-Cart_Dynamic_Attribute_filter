@@ -221,7 +221,9 @@ if (SHOW_FILTER_BY_PRICE == 'Yes') {
 
     $group = DYNAMIC_FILTER_PREFIX . str_replace(' ', '', DYNAMIC_FILTER_PRICE_GROUP);
     $content .= '<hr width="90%" size="0" />';
-    $content .= '<div><div class="dFilter"><p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . DYNAMIC_FILTER_TEXT_PRICE . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
+    $content .= '<div>';
+    $content .= '<div class="dFilter">';
+    $content .= '<p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . DYNAMIC_FILTER_TEXT_PRICE . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
     if (isset($_GET[$group]) && array_filter($_GET[$group])) {
       $content .= '<div class="dFilterClear"><a href="' . zen_href_link($_GET['main_page'], zen_get_all_get_params(array($group)), 'NONSSL') . '">' . zen_image(DIR_WS_TEMPLATE_IMAGES . 'clear_filter.png', DYNAMIC_FILTER_BUTTON_CLEAR_FILTER_ALT) . '</a></div>';
     }
@@ -328,7 +330,9 @@ if (count($filteredProducts) > 0) {
   }
   if ($savName != "") {
     $content .= '<hr width="90%" size="0" />';
-    $content .= '<div><div class="dFilter"><p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . htmlspecialchars(html_entity_decode($savName, ENT_QUOTES)) . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
+    $content .= '<div>';
+    $content .= '<div class="dFilter">';
+    $content .= '<p class="dFilterHeading">' . DYNAMIC_FILTER_TEXT_PREFIX . htmlspecialchars(html_entity_decode($savName, ENT_QUOTES)) . DYNAMIC_FILTER_TEXT_SUFFIX . '</p>';
     if (isset($_GET[$group]) && array_filter($_GET[$group])) {
       $content .= '<div class="dFilterClear"><a href="' . zen_href_link($_GET['main_page'], zen_get_all_get_params(array($group)), 'NONSSL') . '">' . zen_image(DIR_WS_TEMPLATE_IMAGES . 'clear_filter.png', DYNAMIC_FILTER_BUTTON_CLEAR_FILTER_ALT) . '</a></div>';
     }
