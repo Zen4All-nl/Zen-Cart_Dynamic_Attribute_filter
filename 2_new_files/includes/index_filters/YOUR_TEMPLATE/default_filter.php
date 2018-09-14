@@ -53,7 +53,7 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                     AND m.manufacturers_id = " . (int)$_GET['manufacturers_id'] . "
                     AND pd.language_id = " . (int)$_SESSION['languages_id'] .
                     $filter . "
-                    GROUP BY p.products_id
+                    GROUP BY p.products_id, s.status, s.specials_new_products_price
                     " . $having .
                     $alpha_sort;
   } else {
@@ -75,7 +75,7 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                     AND pd.language_id = " . (int)$_SESSION['languages_id'] . "
                     AND m.manufacturers_id = " . (int)$_GET['manufacturers_id'] .
                     $filter . "
-                    GROUP BY p.products_id " .
+                    GROUP BY p.products_id, s.status, s.specials_new_products_price " .
                     $having .
                     $alpha_sort;
   }
@@ -101,7 +101,7 @@ include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
                     AND pd.language_id = " . (int)$_SESSION['languages_id'] . "
                     AND p2c.categories_id = " . (int)$current_category_id .
                     $filter . "
-                    GROUP BY p.products_id " .
+                    GROUP BY p.products_id, s.status, s.specials_new_products_price " .
                     $having .
                     $alpha_sort;
   } else {
