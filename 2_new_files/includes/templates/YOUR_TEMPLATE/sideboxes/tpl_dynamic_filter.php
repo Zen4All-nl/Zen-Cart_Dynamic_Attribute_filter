@@ -334,7 +334,7 @@ if (count($filteredProducts) > 0) {
     $savValue = $attribute['products_options_values_name'];
     $savName = $attribute['products_options_name'];
   }
-  if ($savName != "") {
+  if ($savName != '') {
     $content .= '<hr width="90%" size="0" />';
     $content .= '<div>';
     $content .= '<div class="dFilter">';
