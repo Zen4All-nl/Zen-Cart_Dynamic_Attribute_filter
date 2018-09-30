@@ -16,7 +16,7 @@ $breadcrumb->add(NAVBAR_TITLE);
 if (MAX_DISPLAY_SPECIAL_PRODUCTS > 0 ) {
   include(DIR_WS_MODULES . zen_get_module_directory(FILENAME_DYNAMIC_FILTER));
 
-  $listispecials_query_rawng_sql = "SELECT DISTINCT p.products_id, p.products_image, pd.products_name, p.master_categories_id, p.manufacturers_id
+  $specials_query_raw = "SELECT DISTINCT p.products_id, p.products_image, pd.products_name, p.master_categories_id, p.manufacturers_id
                   FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_SPECIALS . " s ON p.products_id = s.products_id
                   LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON p.products_id = pd.products_id
                   LEFT JOIN " . TABLE_MANUFACTURERS . " m ON p.manufacturers_id = m.manufacturers_id
