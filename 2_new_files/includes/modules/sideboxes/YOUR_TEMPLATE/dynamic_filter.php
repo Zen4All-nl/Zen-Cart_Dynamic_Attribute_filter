@@ -8,15 +8,7 @@
  * updated in v1.4 by Zen4All
  */
 
-if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
-                             && !$this_is_home_page
-                             && ($category_depth == 'products'
-                             || $category_depth == 'top')
-   || (FILTER_ALL == 'Yes' && $current_page_base == 'products_all')
-   || (FILTER_NEW == 'Yes' && $current_page_base == 'products_new')
-   || (FILTER_FEATURED == 'Yes' && $current_page_base == 'featured_products')
-   || (FILTER_SPECIALS == 'Yes' && $current_page_base == 'specials')
-   || (FILTER_SEARCH == 'Yes' && $current_page_base == 'advanced_search_result')) {
+if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index' && !$this_is_home_page && ($category_depth == 'products' || $category_depth == 'top') || (FILTER_ALL == 'Yes' && $current_page_base == 'products_all') || (FILTER_NEW == 'Yes' && $current_page_base == 'products_new') || (FILTER_FEATURED == 'Yes' && $current_page_base == 'featured_products') || (FILTER_SPECIALS == 'Yes' && $current_page_base == 'specials') || (FILTER_SEARCH == 'Yes' && $current_page_base == 'advanced_search_result')) {
 
 //if (defined('CEON_URI_MAPPING_ENABLED') && CEON_URI_MAPPING_ENABLED == 1) $pageName = preg_replace('{^.*/([^\?]+)\??.*$}', '$1', $_SERVER['REQUEST_URI']);
   $pageName = substr(strrchr($breadcrumb->trail('/'), "/"), 1);
@@ -26,6 +18,10 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
   $currency_symbol = $currencies->currencies[$currency_type]['symbol_left'];
   $conversion_rate = $currencies->get_value($_SESSION['currency']);
   $resetParms = array();
+  $unfilteredProducts = array();
+  $unfilteredManufacturers = array();
+  $unfilteredCategories = array();
+
   $display_limit = zen_get_new_date_range();
   if (FILTER_GOOGLE_TRACKING == 'Asynchronous') {
     $trackingStart = '_gaq.push(["_trackEvent", ';
@@ -61,9 +57,7 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
 // retrieve filtered and unfiltered product options
   $min = 0;
   $max = 0;
-  $unfilteredProducts = array();
-  $unfilteredManufacturers = array();
-  $unfilteredCategories = array();
+
   foreach ($unfiltered as $unfilteredItem) {
     if ($min == 0 || round($unfilteredItem['products_price_sorter'], 2) < $min) {
       $min = round($unfilteredItem['products_price_sorter'], 2);
@@ -79,6 +73,7 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
   $filteredProducts = array();
   $filteredManufacturers = array();
   $filteredCategories = array();
+
   foreach ($filtered as $filteredItem) {
     $priceArray[] = round($filteredItem['products_price_sorter'], 2);
     $filteredProducts[] = $filteredItem['products_id'];
@@ -160,14 +155,14 @@ if (FILTER_CATEGORY == 'Yes' && $current_page_base == 'index'
                         JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON p2a.options_id = po.products_options_id
                           AND po.language_id = " . (int)$_SESSION['languages_id'] . "
                         JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON p2a.options_values_id = pov.products_options_values_id
-                          AND pov.language_id = " . (int)$_SESSION['languages_id'] .
-                        (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
-                          JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p2a.products_id = p2as.products_id
-                            AND p2as.stock_attributes LIKE CONCAT('%', p2a.products_attributes_id, '%')" : "") . "
-                        WHERE p2a.products_id IN ('" . implode("','", $unfilteredProducts) . "')" .
-                        (FILTER_OPTIONS_INCLUDE != '' ? " AND p2a.options_id IN (" . FILTER_OPTIONS_INCLUDE . ")" : '') .
-                        (FILTER_OPTIONS_EXCLUDE != '' ? " AND p2a.options_id NOT IN (" . FILTER_OPTIONS_EXCLUDE . ")" : '') .
-                        (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
+                          AND pov.language_id = " . (int)$_SESSION['languages_id'] . "
+                        " . (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
+                        JOIN " . TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK . " p2as ON p2a.products_id = p2as.products_id
+                          AND p2as.stock_attributes LIKE CONCAT('%', p2a.products_attributes_id, '%')" : "") . "
+                        WHERE p2a.products_id IN ('" . implode("','", $unfilteredProducts) . "')" . "
+                        " . (FILTER_OPTIONS_INCLUDE != '' ? " AND p2a.options_id IN (" . FILTER_OPTIONS_INCLUDE . ")" : '') . "
+                        " . (FILTER_OPTIONS_EXCLUDE != '' ? " AND p2a.options_id NOT IN (" . FILTER_OPTIONS_EXCLUDE . ")" : '') . "
+                        " . (defined('TABLE_PRODUCTS_WITH_ATTRIBUTES_STOCK') ? "
                           AND p2as.quantity > 0" : "") . "
                         AND po.products_options_type != 1
                         AND po.products_options_type != 4
